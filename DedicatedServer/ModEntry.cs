@@ -52,7 +52,7 @@ namespace DedicatedServer
                 new StartFarmStage(this.Helper, Monitor, config).Enable();
             }
             // makes the host stamina and health infinite
-            if (Context.IsWorldReady) 
+            if (Context.IsWorldReady && e.IsOneSecond) 
             {
                 Game1.player.health = Game1.player.maxHealth;
                 Game1.player.stamina = Game1.player.maxStamina;
