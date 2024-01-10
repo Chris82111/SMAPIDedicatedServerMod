@@ -96,7 +96,7 @@ namespace DedicatedServer.HostAutomatorStages
             foreach (Farmer farmer in farmers)
             {
                 //skip if the farmer is bot
-                if(farmer.userID == Game1.player.userID) continue;
+                if(farmer.UniqueMultiplayerID == Game1.player.UniqueMultiplayerID) continue;
                 
                 // Update highest skill levels
                 foreach (var skill in highestSkillLevels.Keys.ToList())
