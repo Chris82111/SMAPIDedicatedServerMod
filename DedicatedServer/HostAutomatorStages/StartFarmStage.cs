@@ -26,6 +26,7 @@ namespace DedicatedServer.HostAutomatorStages
         private DemolishCommandListener demolishCommandListener = null;
         private PauseCommandListener pauseCommandListener = null;
         private ServerCommandListener serverCommandListener = null;
+        private InvisibleCommandListener invisibleCommandListener = null;
 
         public StartFarmStage(IModHelper helper, IMonitor monitor, ModConfig config) : base(helper)
         {
@@ -327,6 +328,9 @@ namespace DedicatedServer.HostAutomatorStages
             // The server must be started, the value is set accordingly after each start
             chatBox.textBoxEnter("/mbp " + config.MoveBuildPermission);
 
+            // Make the host invisible to everyone else 
+            Game1.displayFarmer = false;
+
             automatedHost = new AutomatedHost(helper, monitor, config, chatBox);
             automatedHost.Enable();
 
@@ -338,6 +342,8 @@ namespace DedicatedServer.HostAutomatorStages
             pauseCommandListener.Enable();
             serverCommandListener = new ServerCommandListener(helper, config, chatBox);
             serverCommandListener.Enable();
+            invisibleCommandListener = new InvisibleCommandListener(chatBox);
+            invisibleCommandListener.Enable();
         }
 
         private void onReturnToTitle(object sender, ReturnedToTitleEventArgs e)
@@ -352,6 +358,8 @@ namespace DedicatedServer.HostAutomatorStages
             pauseCommandListener = null;
             serverCommandListener?.Disable();
             serverCommandListener = null;
+            invisibleCommandListener?.Disable();
+            invisibleCommandListener = null;
         }
     }
 }

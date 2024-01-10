@@ -42,9 +42,14 @@ Upon running SMAPI with the mod installed for the first time, a `config.json` fi
 
 All commands in the game must be sent privately to the player `ServerBot`. For example, you must write the following `/message ServerBot MoveBuildPermission on`.
 
-- `MoveBuildPermission`: Changes farmhands permissions to move buildings from the Carpenter's shop. Set to `off` to entirely disable moving buildings, set to `owned` to allow farmhands to move buildings that they purchased, or set to `on` to allow moving all buildings. The changes are transferred to the `config.json` file.
-- `movepermissiong`: Alias for MoveBuildPermission
-- `mbp`: Alias for MoveBuildPermission
+### Commands
+| Command       | Description                   | Parameters                    | Alias           |
+| ------------- | ----------------------------- | ----------------------------- | --------------- |
+| `build`       | Build a cabin in front of player on the farm. | - `building_name`: The type of cabin to construct. Valid options are "stone_cabin," "plank_cabin," and "log_cabin." | -               |
+| `demolish`    | Demolish a structure in front of player on the farm. | -               | -               |
+| `invisible`   | Toggle the visibility of the host character. | -               | -               |
+| `pause`       | Pause or resume the game.                      | -               | -               |
+| `movebuildpermission` | Change the move build permission setting for the server. | - `parameter`: The new move build permission setting. Valid options are: `off` to entirely disable moving buildings, `owned` to allow farmhands to move buildings that they purchased, `on` to allow moving all buildings| `movepermissiong`, `mbp`|
 
 ## Running the Server on Linux Without GUI
 
