@@ -327,9 +327,6 @@ namespace DedicatedServer.HostAutomatorStages
             // The server must be started, the value is set accordingly after each start
             chatBox.textBoxEnter("/mbp " + config.MoveBuildPermission);
 
-            //We set bot mining lvl to 10 so he doesn't lvlup passively
-            Game1.player.MiningLevel = 10;
-
             automatedHost = new AutomatedHost(helper, monitor, config, chatBox);
             automatedHost.Enable();
 

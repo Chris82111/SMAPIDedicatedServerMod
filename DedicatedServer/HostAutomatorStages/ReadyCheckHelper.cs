@@ -28,6 +28,15 @@ namespace DedicatedServer.HostAutomatorStages
 
         private static Dictionary<string, NetFarmerCollection> readyPlayersDictionary = new Dictionary<string, NetFarmerCollection>();
 
+        private static Dictionary<string, int> highestSkillLevels = new Dictionary<string, int>
+        {
+            { "Mining", 0 },
+            { "Farming", 0 },
+            { "Foraging", 0 },
+            { "Fishing", 0 },
+            { "Combat", 0 }
+        };
+
         public static void OnDayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
             if (readyChecks == null)
@@ -44,6 +53,9 @@ namespace DedicatedServer.HostAutomatorStages
             if (!Game1.player.eventsSeen.Contains(295672) && Game1.netWorldState.Value.MuseumPieces.Count() >= 60) {
                 Game1.player.eventsSeen.Add(295672);
             }
+
+            // Call the method to update highest skill levels
+            UpdateHighestSkillLevels(Game1.getOnlineFarmers());
 
             //Upgrade farmhouse to match highest level cabin
             var targetLevel = Game1.getFarm().buildings.Where(o => o.isCabin).Select(o => ((Cabin)o.indoors.Value).upgradeLevel).DefaultIfEmpty(0).Max();
@@ -76,6 +88,26 @@ namespace DedicatedServer.HostAutomatorStages
         public static void WatchReadyCheck(string checkName)
         {
             readyPlayersDictionary.TryAdd(checkName, null);
+        }
+
+        // Find the highest skill levels
+        private static void UpdateHighestSkillLevels(IEnumerable<Farmer> farmers)
+        {
+            foreach (Farmer farmer in farmers)
+            {
+                // Update highest skill levels
+                foreach (var skill in highestSkillLevels.Keys.ToList())
+                {
+                    int farmerSkillLevel = (int)typeof(Farmer).GetProperty(skill + "Level").GetValue(farmer);
+                    highestSkillLevels[skill] = Math.Max(highestSkillLevels[skill], farmerSkillLevel);
+                }
+            }
+
+            // Set bot skill levels to the highest values found
+            foreach (var skill in highestSkillLevels.Keys)
+            {
+                Game1.player.GetType().GetProperty(skill + "Level").SetValue(Game1.player, highestSkillLevels[skill]);
+            }
         }
 
         // Prerequisite: OnDayStarted() must have been called at least once prior to this method being called.
