@@ -116,11 +116,7 @@ namespace DedicatedServer.Utils
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth == 25;
 
         /// <summary>
-        /// Don't enable chat box on spirit's eve nor feast of the winter star
-        /// 
-        /// OLD:
-        ///  if ((Game1.currentSeason != "fall" || Game1.dayOfMonth != 27) &&
-        ///  (Game1.currentSeason != "winter" || Game1.dayOfMonth != 25) )
+        /// Only turn on the chat box when necessary.
         /// </summary>
         public static bool IsHostDecidingNextStep
         {
@@ -163,6 +159,7 @@ namespace DedicatedServer.Utils
         {
             return MainController.IsReady("festivalStart");
         }
+
         public static bool OthersWaitingToAttend(int numOtherPlayers)
         {
             return MainController.GetNumberReady("festivalStart") == (numOtherPlayers + (IsWaitingToAttend() ? 1 : 0));
@@ -170,7 +167,7 @@ namespace DedicatedServer.Utils
         
         public static bool ShouldAttend(int numOtherPlayers)
         {
-            return numOtherPlayers > 0 && OthersWaitingToAttend(numOtherPlayers) && Utility.isFestivalDay() && !IsTodayBeachNightMarket && Game1.timeOfDay >= Utility.getStartTimeOfFestival() && Game1.timeOfDay <= getFestivalEndTime();
+            return numOtherPlayers > 0 && OthersWaitingToAttend(numOtherPlayers) && Utility.isFestivalDay() && !IsTodayBeachNightMarket && Game1.timeOfDay >= GetFestivalStartTime() && Game1.timeOfDay <= GetFestivalEndTime();
         }
 
         public static bool IsWaitingToLeave()
@@ -188,7 +185,10 @@ namespace DedicatedServer.Utils
             return Game1.isFestival() && OthersWaitingToLeave(numOtherPlayers);
         }
 
-        private static int getFestivalEndTime()
+        public static int GetFestivalStartTime()
+            => Utility.getStartTimeOfFestival();
+
+        public static int GetFestivalEndTime()
         {
             if (Game1.weatherIcon == 1)
             {
