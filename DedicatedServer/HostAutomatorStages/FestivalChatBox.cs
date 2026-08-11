@@ -51,11 +51,11 @@ namespace DedicatedServer.HostAutomatorStages
                 return;
             }
 
-            if (e.Message.ToLower() == "start")
+            if (e.Message.ToLowerInvariant() == "start")
             {
                 votes.Add(e.SourceFarmerId);
             }
-            else if (e.Message.ToLower() == "cancel")
+            else if (e.Message.ToLowerInvariant() == "cancel")
             {
                 votes.Remove(e.SourceFarmerId);
             }
