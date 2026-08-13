@@ -1,10 +1,8 @@
 ﻿using DedicatedServer.HostAutomatorStages.BehaviorStates;
 using DedicatedServer.Utils;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DedicatedServer.HostAutomatorStages
@@ -18,25 +16,27 @@ namespace DedicatedServer.HostAutomatorStages
 
         public override void Process()
         {
-            if (Utils.Festivals.ShouldAttend(MainController.NumberOfPlayers) && 
-                false == Utils.Festivals.IsWaitingToAttend())
+            var numberOfPlayers = MainController.NumberOfPlayers;
+
+            if (Festivals.ShouldAttend(numberOfPlayers) && 
+                false == Festivals.IsWaitingToAttend())
             {
                 WaitForFestivalAttendance();
             }
             else if (
-                false == Utils.Festivals.ShouldAttend(MainController.NumberOfPlayers) && 
-                Utils.Festivals.IsWaitingToAttend())
+                false == Festivals.ShouldAttend(numberOfPlayers) && 
+                Festivals.IsWaitingToAttend())
             {
                 StopWaitingForFestivalAttendance();
             }
-            else if(Utils.Festivals.ShouldLeave(MainController.NumberOfPlayers) &&
-                false == Utils.Festivals.IsWaitingToLeave())
+            else if(Festivals.ShouldLeave(numberOfPlayers) &&
+                false == Festivals.IsWaitingToLeave())
             {
                 WaitForFestivalEnd();
             }
             else if (
-                false == Utils.Festivals.ShouldLeave(MainController.NumberOfPlayers) &&
-                Utils.Festivals.IsWaitingToLeave())
+                false == Festivals.ShouldLeave(numberOfPlayers) &&
+                Festivals.IsWaitingToLeave())
             {
                 StopWaitingForFestivalEnd();
             }
@@ -49,7 +49,8 @@ namespace DedicatedServer.HostAutomatorStages
                     {
                         // Start the festival
                         SendChatMessage($"{voteCounts.Item1} / {voteCounts.Item2} votes casted. Starting the festival event...");
-                        if (Game1.currentSeason == "summer" && Game1.dayOfMonth == 11 && Game1.player.team.luauIngredients.Count > 0)
+
+                        if (Festivals.IsTodayLuau && Game1.player.team.luauIngredients.Count > 0)
                         {
                             // If it's the Luau and the pot isn't empty, add a duplicate of someone else's item to the pot. It (mostly) doesn't matter
                             // which item is duplicated. Indeed, the total luau score is simply equal to the lowest score (or some extremum) of any item
