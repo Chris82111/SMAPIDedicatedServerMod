@@ -10,28 +10,6 @@ namespace DedicatedServer.Utils
         #region Festivals
 
         /// <summary>
-        ///         Find out if there's a specific festival taking place today.
-        /// <br/>   The original functions are:
-        /// <br/>   <see cref="Utility.isFestivalDay()"/>
-        /// <br/>   <see cref="Utility.IsPassiveFestivalDay()"/>
-        /// </summary>
-        public static bool IsTodaySpecificFestival
-        { 
-            get
-            {
-                var day = Game1.dayOfMonth;
-                return Game1.currentSeason switch
-                {
-                    "spring" => day is 13 or 15 or 16 or 17 or 24,
-                    "summer" => day is 11 or 20 or 21 or 28,
-                    "fall" => day is 16 or 27,
-                    "winter" => day is 8 or 12 or 13 or 15 or 16 or 17 or 25,
-                    _ => false
-                };
-            }
-        }
-
-        /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// </summary>
@@ -153,7 +131,26 @@ namespace DedicatedServer.Utils
             }
         }
 
-#endregion
+        #endregion
+
+        /// <summary>
+        ///         Get whether there's a festival scheduled for today in any location.
+        /// <br/>   
+        /// <br/>   It's better to read the static field (<see cref="Game1.weatherIcon"/>)
+        /// <br/>   than to call the function that set the field; <see cref="StardewValley.Utility.isFestivalDay(int, Season, string)"/>.
+        /// <br/>  
+        /// <br/>   This doesn't match passive festivals like the Night Market; <see cref="StardewValley.Utility.IsPassiveFestivalDay"/> for those.
+        /// </summary>
+        /// <returns>
+        ///         true : If today is a festival day
+        /// <br/>   false: If today is not a festival day</returns>
+        public static bool IsFestivalDay()
+        {
+            return 1 == Game1.weatherIcon;
+        }
+
+
+        #region No longer in use, but there are still some good examples
 
         public static bool IsWaitingToAttend()
         {
@@ -164,10 +161,14 @@ namespace DedicatedServer.Utils
         {
             return MainController.GetNumberReady("festivalStart") == (numOtherPlayers + (IsWaitingToAttend() ? 1 : 0));
         }
-        
+
         public static bool ShouldAttend(int numOtherPlayers)
         {
-            return numOtherPlayers > 0 && OthersWaitingToAttend(numOtherPlayers) && Utility.isFestivalDay() && !IsTodayBeachNightMarket && Game1.timeOfDay >= GetFestivalStartTime() && Game1.timeOfDay <= GetFestivalEndTime();
+            return
+                numOtherPlayers > 0 &&
+                OthersWaitingToAttend(numOtherPlayers) &&
+                false == IsTodayBeachNightMarket &&
+                IsTheFestivalGoingOn();
         }
 
         public static bool IsWaitingToLeave()
@@ -185,17 +186,51 @@ namespace DedicatedServer.Utils
             return Game1.isFestival() && OthersWaitingToLeave(numOtherPlayers);
         }
 
-        public static int GetFestivalStartTime()
-            => Utility.getStartTimeOfFestival();
+        #endregion
 
+        /// <summary>
+        /// Checks if the festival is ready to begin
+        /// </summary>
+        /// <returns>
+        ///         true : The festival is ready to begin
+        /// <br/>   false: The festival is being organized.</returns>
+        public static bool IsTheFestivalGoingOn()
+        {
+            return IsFestivalDay() &&
+                Game1.timeOfDay >= GetFestivalStartTime() &&
+                Game1.timeOfDay <= GetFestivalEndTime();
+        }
+
+        /// <summary>
+        /// Gets the start time of the festival
+        /// </summary>
+        /// <returns>Start time of the festival, or -1 if there is no festival today</returns>
+        public static int GetFestivalStartTime()
+        {
+            return Utility.getStartTimeOfFestival();
+        }
+
+        /// <summary>
+        /// Gets the end time of the festival
+        /// </summary>
+        /// <returns>End time of the festival, or -1 if there is no festival today</returns>
         public static int GetFestivalEndTime()
         {
-            if (Game1.weatherIcon == 1)
-            {
-                return Convert.ToInt32(Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[1].Split(' ')[1]);
-            }
+            if (false == IsFestivalDay()) { return -1; }
 
-            return -1;
+            return Convert.ToInt32(
+                Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[1].Split(' ')[1]);
+        }
+
+        /// <summary>
+        /// Gets the location of the festival
+        /// </summary>
+        /// <returns>Location of the festival, or null if there is no festival today</returns>
+        public static string GetLocationOfFestival()
+        {
+            if (false == IsFestivalDay()) { return null; }
+
+            return Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[0];
         }
     }
 }
