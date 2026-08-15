@@ -10,25 +10,43 @@ namespace DedicatedServer.HostAutomatorStages
 {
     enum TransitionFestival
     {
-        Uninit = 0, // default value and set at each end of the day
+        /// <summary> default value and set at each end of the day </summary>
+        Uninit = 0,
 
-        NoFestivalDay, // set after the day is started
-        FestivalDay, // set after the day is started
+        /// <summary> Set after the day is started </summary>
+        NoFestivalDay,
 
-        FestivalNotStarted,
+        /// <summary> Set after the day is started, waits for the participation time slot </summary>
+        FestivalDay,
+
+
+        /// <summary> This status is achieved as soon as the time slot for participating in the festival has been reached. </summary>
         FestivalGoingOn,
-        FestivalIsOver,
 
-        SomeoneWantsToGoTheFestival,
+        /// <summary> Someone wants to go the festival </summary>
+        WaitingForFestivalAttendance,
 
+        /// <summary> Transition period until the game starts the festival </summary>
         StartingFestival,
 
+        /// <summary> The festival has the option to launch an event </summary>
         AtFestivalChatBox,
+
+        /// <summary> The festival does not offer any special events. </summary>
         AtFestival,
 
-        SomeoneWantsToLeaveTheFestivalChatBox,
-        SomeoneWantsToLeaveTheFestival,
+        /// <summary> Someone wants to leave the festival (from chatbox) </summary>
+        WaitingForFestivalEndChatBox,
+
+        /// <summary> Someone wants to leave the festival </summary>
+        WaitingForFestivalEnd,
+
+        /// <summary> Transition period until the game ends the festival </summary>
         EndingFestival,
+
+
+        /// <summary> The festival is over </summary>
+        FestivalIsOver,        
     }
 
     internal class TransitionFestivalAttendanceBehaviorLink : BehaviorLink
@@ -47,12 +65,8 @@ namespace DedicatedServer.HostAutomatorStages
             switch (TransitionFestival)
             {
                 case TransitionFestival.Uninit:
-                    ;
-                    break;
-
-
                 case TransitionFestival.NoFestivalDay:
-                    ;
+                case TransitionFestival.FestivalIsOver:
                     break;
 
 
@@ -75,14 +89,14 @@ namespace DedicatedServer.HostAutomatorStages
                     ready = Game1.netReady.GetNumberReady("festivalStart");
                     if (0 < ready)
                     {
-                        TransitionFestival = TransitionFestival.SomeoneWantsToGoTheFestival;
+                        TransitionFestival = TransitionFestival.WaitingForFestivalAttendance;
                         WaitForFestivalAttendance();
                         break;
                     }
                     break;
 
 
-                case TransitionFestival.SomeoneWantsToGoTheFestival:
+                case TransitionFestival.WaitingForFestivalAttendance:
                     if (false == Festivals.IsTheFestivalGoingOn())
                     {
                         TransitionFestival = TransitionFestival.FestivalIsOver;
@@ -90,7 +104,7 @@ namespace DedicatedServer.HostAutomatorStages
                     }
 
                     ready = Game1.netReady.GetNumberReady("festivalStart");
-                    if (1>= ready)
+                    if (1 >= ready)
                     {
                         TransitionFestival = TransitionFestival.FestivalGoingOn;
                         StopWaitingForFestivalAttendance();
@@ -130,14 +144,9 @@ namespace DedicatedServer.HostAutomatorStages
                         {
                             TransitionFestival = TransitionFestival.AtFestival;
                         }
+                        break;
                     }
                     break;
-
-
-                case TransitionFestival.FestivalIsOver:
-                    ;
-                    break;
-
 
                 case TransitionFestival.AtFestivalChatBox:
                     festivalChatBox.CheckVisible();
@@ -175,14 +184,13 @@ namespace DedicatedServer.HostAutomatorStages
                             ? TransitionFestival.AtFestival
                             : TransitionFestival.EndingFestival;
 
-
                         break;
                     }
 
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (0 < ready)
                     {
-                        TransitionFestival = TransitionFestival.SomeoneWantsToLeaveTheFestivalChatBox;
+                        TransitionFestival = TransitionFestival.WaitingForFestivalEndChatBox;
                         WaitForFestivalEnd();
                         break;
                     }
@@ -204,14 +212,14 @@ namespace DedicatedServer.HostAutomatorStages
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (0 < ready)
                     {
-                        TransitionFestival = TransitionFestival.SomeoneWantsToLeaveTheFestival;
+                        TransitionFestival = TransitionFestival.WaitingForFestivalEnd;
                         WaitForFestivalEnd();
                         break;
                     }
                     
                     break;
 
-                case TransitionFestival.SomeoneWantsToLeaveTheFestivalChatBox:
+                case TransitionFestival.WaitingForFestivalEndChatBox:
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (1 >= ready)
                     {
@@ -228,7 +236,7 @@ namespace DedicatedServer.HostAutomatorStages
                     }
                     break;
 
-                case TransitionFestival.SomeoneWantsToLeaveTheFestival:
+                case TransitionFestival.WaitingForFestivalEnd:
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (1 >= ready)
                     {
@@ -253,7 +261,6 @@ namespace DedicatedServer.HostAutomatorStages
                         // up at the festival without any NPCs. This can be fixed by
                         // logging out and back in, but this way, the day just runs smoothly.
                         OnEventMassDisconnect();
-                        break;
                     }
 
                     if (false == isEvent)
@@ -411,7 +418,9 @@ namespace DedicatedServer.HostAutomatorStages
             }
         }
 
-        
+
+        #region Controls whether the host joins or leaves an event
+
         private void WaitForFestivalAttendance()
         {
             var location = Game1.getLocationFromName(Festivals.GetLocationOfFestival());
@@ -459,6 +468,8 @@ namespace DedicatedServer.HostAutomatorStages
 
             // Stop waiting for festival end;
         }
+
+        #endregion
 
 
         private static void SendChatMessage(string message)
