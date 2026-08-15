@@ -26,6 +26,7 @@ namespace DedicatedServer.HostAutomatorStages
         AtFestivalChatBox,
         AtFestival,
 
+        SomeoneWantsToLeaveTheFestivalChatBox,
         SomeoneWantsToLeaveTheFestival,
         EndingFestival,
     }
@@ -100,12 +101,23 @@ namespace DedicatedServer.HostAutomatorStages
                     if (required <= ready)
                     {
                         TransitionFestival = TransitionFestival.StartingFestival;
+                        _timeout = Game1.timeOfDay + 30;
                         break;
                     }
                     break;
 
 
                 case TransitionFestival.StartingFestival:
+                    if (_timeout <= Game1.timeOfDay)
+                    {
+                        // This is only necessary if I want to go to a festival at the last minute
+                        // but a cutscene pops up. In that case, the game doesn't switch to the
+                        // festival, and the state machine freezes.
+                        TransitionFestival = TransitionFestival.FestivalGoingOn;
+                        StopWaitingForFestivalAttendance();
+                        break;
+                    }
+
                     if (isEvent)
                     {
                         if (Festivals.IsHostDecidingNextStep)
@@ -158,20 +170,37 @@ namespace DedicatedServer.HostAutomatorStages
 
                         festivalChatBox.Disable();
 
-                        TransitionFestival = TransitionFestival.EndingFestival;
+                        // At the Stardw Valley Fair, you must manually exit the festival after the event.
+                        TransitionFestival = (Festivals.IsTodayStardewValleyFair)
+                            ? TransitionFestival.AtFestival
+                            : TransitionFestival.EndingFestival;
+
+
                         break;
                     }
 
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (0 < ready)
                     {
-                        throw new Exception("Does this happen anytime?");
+                        TransitionFestival = TransitionFestival.SomeoneWantsToLeaveTheFestivalChatBox;
+                        WaitForFestivalEnd();
+                        break;
                     }
 
                     break;
 
 
                 case TransitionFestival.AtFestival:
+                    if (0 == MainController.NumberOfPlayers)
+                    {
+                        // In a real festival, no player can join; if all players are disconnected,
+                        // the host must end the event 
+                        OnEventMassDisconnect();
+                        TransitionFestival = TransitionFestival.EndingFestival;
+                        WaitForFestivalEnd();
+                        break;
+                    }
+
                     ready = Game1.netReady.GetNumberReady("festivalEnd");
                     if (0 < ready)
                     {
@@ -180,6 +209,23 @@ namespace DedicatedServer.HostAutomatorStages
                         break;
                     }
                     
+                    break;
+
+                case TransitionFestival.SomeoneWantsToLeaveTheFestivalChatBox:
+                    ready = Game1.netReady.GetNumberReady("festivalEnd");
+                    if (1 >= ready)
+                    {
+                        TransitionFestival = TransitionFestival.AtFestivalChatBox;
+                        StopWaitingForFestivalEnd();
+                        break;
+                    }
+
+                    required = Game1.netReady.GetNumberRequired("festivalEnd");
+                    if (required <= ready)
+                    {
+                        TransitionFestival = TransitionFestival.EndingFestival;
+                        break;
+                    }
                     break;
 
                 case TransitionFestival.SomeoneWantsToLeaveTheFestival:
@@ -200,6 +246,16 @@ namespace DedicatedServer.HostAutomatorStages
                     break;
 
                 case TransitionFestival.EndingFestival:
+                    if (0 == MainController.NumberOfPlayers)
+                    {
+                        // If the players are disconnected at the end, the host doesn't
+                        // completely leave the festival, and a player who logs in ends
+                        // up at the festival without any NPCs. This can be fixed by
+                        // logging out and back in, but this way, the day just runs smoothly.
+                        OnEventMassDisconnect();
+                        break;
+                    }
+
                     if (false == isEvent)
                     {
                         TransitionFestival = TransitionFestival.FestivalIsOver;
@@ -260,6 +316,10 @@ namespace DedicatedServer.HostAutomatorStages
         public event EventHandler EventMassDisconnect;
 
         private readonly FestivalChatBox festivalChatBox;
+        
+        private bool _hasEventMassDisconnectInvokedBefore = false;
+
+        private int _timeout;
 
         public TransitionFestivalAttendanceBehaviorLink()
         {
@@ -294,6 +354,8 @@ namespace DedicatedServer.HostAutomatorStages
             TransitionFestival = (Festivals.IsFestivalDay())
                 ? TransitionFestival.FestivalDay
                 : TransitionFestival.NoFestivalDay;
+
+            _hasEventMassDisconnectInvokedBefore = false;
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
@@ -341,7 +403,13 @@ namespace DedicatedServer.HostAutomatorStages
 
 
         private void OnEventMassDisconnect()
-            => EventMassDisconnect?.Invoke(this, EventArgs.Empty);
+        {
+            if (false == _hasEventMassDisconnectInvokedBefore)
+            {
+                _hasEventMassDisconnectInvokedBefore = true;
+                EventMassDisconnect?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         
         private void WaitForFestivalAttendance()

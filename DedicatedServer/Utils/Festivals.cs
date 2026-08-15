@@ -10,8 +10,81 @@ namespace DedicatedServer.Utils
         #region Festivals
 
         /// <summary>
+        ///         Find out if there's a specific festival taking place today.
+        /// <br/>   The original functions are:
+        /// <br/>   <see cref="Utility.isFestivalDay()"/>
+        /// <br/>   <see cref="Utility.IsPassiveFestivalDay()"/>
+        /// </summary>
+        public static bool IsTodaySpecificFestival
+        { 
+            get
+            {
+                var day = Game1.dayOfMonth;
+                return Game1.currentSeason switch
+                {
+                    "spring" => day is 13 or 15 or 16 or 17 or 24,
+                    "summer" => day is 11 or 20 or 21 or 28,
+                    "fall" => day is 16 or 27,
+                    "winter" => day is 8 or 12 or 13 or 15 or 16 or 17 or 25,
+                    _ => false
+                };
+            }
+        }
+
+        public static string GetFestivalName()
+        {
+            var day = Game1.dayOfMonth;
+            switch (Game1.currentSeason)
+            {
+                case "spring":
+                    switch (Game1.dayOfMonth)
+                    {
+                        case 13: return "Egg Festival";
+                        case 15:
+                        case 16:
+                        case 17: return "Desert Festival";
+                        case 24: return "Flower Dance";
+                        default: return null;
+                    }
+                case "summer":
+                    switch (Game1.dayOfMonth)
+                    {
+                        case 11: return "Luau";
+                        case 20:
+                        case 21: return "Trout Derby";
+                        case 28: return "Dance Of The Moonlight Jellies";
+                        default:
+                            return null;
+                    }
+                case "fall":
+                    switch (Game1.dayOfMonth)
+                    {
+                        case 16: return "Stardew Valley Fair";
+                        case 27: return "Spirits Eve";
+                        default: return null;
+                    }
+                case "winter":
+                    switch (Game1.dayOfMonth)
+                    {
+                        case 8: return "Festival Of Ice";
+                        case 12:
+                        case 13: return "Squid Fest";
+                        case 15:
+                        case 16:
+                        case 17: return "Beach Night Market";
+                        case 25: return "Feast Of The Winter Star";
+                        default:
+                            return null;
+                    }
+                default: return null;
+            }
+        }
+
+        /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayEggFestival
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth == 13;
@@ -19,6 +92,7 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: true
         /// <br/>   No real festival, no trigger
+        /// <br/>   Tested: Player disconnection, reconnection is possible
         /// </summary>
         public static bool IsTodayDesertFestival
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 17;
@@ -26,6 +100,8 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The end must be triggerd
+        /// <br/>   Tested: Player disconnection, visible, vote
         /// </summary>
         public static bool IsTodayFlowerDance
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth == 24;
@@ -33,6 +109,8 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayLuau
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth == 11;
@@ -40,6 +118,7 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: true
         /// <br/>   No real festival, no trigger
+        /// <br/>   Tested: Nothing to be tested
         /// </summary>
         public static bool IsTodayTroutDerby
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth >= 20 && Game1.dayOfMonth <= 21;
@@ -47,6 +126,8 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayDanceOfTheMoonlightJellies
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth == 28;
@@ -54,13 +135,17 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The festival can be left at any time. You must manually exit the event after you have triggered the next steps.
+        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayStardewValleyFair
             => Game1.currentSeason.EqualsIgnoreCase("fall") && Game1.dayOfMonth == 16;
 
         /// <summary>
-        /// <br/>   Time passes: true
+        /// <br/>   Time passes: false
         /// <br/>   It's a festival, but you can just leave whenever you want, no trigger
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, left normal
         /// </summary>
         public static bool IsTodaySpiritsEve
             => Game1.currentSeason.EqualsIgnoreCase("fall") && Game1.dayOfMonth == 27;
@@ -68,6 +153,8 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayFestivalOfIce
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth == 8;
@@ -75,6 +162,7 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: true
         /// <br/>   No real festival, no trigger
+        /// <br/>   Tested: Player disconnection, reconnection is possible
         /// </summary>
         public static bool IsTodaySquidFest
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth >= 12 && Game1.dayOfMonth <= 13;
@@ -82,6 +170,7 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: true
         /// <br/>   No real festival, no trigger
+        /// <br/>   Tested: Player disconnection, reconnection is possible
         /// </summary>
         public static bool IsTodayBeachNightMarket
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 17;
@@ -89,6 +178,8 @@ namespace DedicatedServer.Utils
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   It's a festival, but you can just leave whenever you want, no trigger
+        /// <br/>   The festival can be left at any time.
+        /// <br/>   Tested: Player disconnection, left normal
         /// </summary>
         public static bool IsTodayFeastOfTheWinterStar
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth == 25;
