@@ -300,14 +300,14 @@ namespace DedicatedServer.MessageCommands
                         }
                         break;
 
+                    case "settomonth":
+                        int month = int.TryParse(param, out int resultMonth) ? resultMonth : 0;
+                        MainController.SetMonth(month);
+                        break;
+
                     case "settoday":
-                        int days = int.TryParse(param, out int result) ? result : 0;
-                        if (28 >= days && 0 < days)
-                        {
-                            days = days - Game1.dayOfMonth;
-                            Game1.stats.DaysPlayed += (uint)days;
-                            Game1.dayOfMonth += days;
-                        }
+                        int day = int.TryParse(param, out int resultDay) ? resultDay : 0;
+                        MainController.SetDay(day);
                         break;
 
                     case "seed":

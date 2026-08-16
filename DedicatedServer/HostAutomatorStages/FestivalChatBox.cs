@@ -144,10 +144,13 @@ namespace DedicatedServer.HostAutomatorStages
                     }
                     else
                     {
-                        if (DateTime.UtcNow >= item.Timeout)
+                        if (false == item.Visible)
                         {
-                            item.Visible = true;
-                            OnVisibleEntered();
+                            if (DateTime.UtcNow >= item.Timeout)
+                            {
+                                item.Visible = true;
+                                OnVisibleEntered();
+                            }
                         }
                     }
                 }

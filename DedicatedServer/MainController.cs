@@ -130,6 +130,40 @@ namespace DedicatedServer
 
         #region Game
 
+        public static void SetMonth(Season season)
+        {
+            switch (season)
+            {
+                case Season.Spring: Game1.currentSeason = "spring"; break;
+                case Season.Summer: Game1.currentSeason = "summer"; break;
+                case Season.Fall: Game1.currentSeason = "fall"; break;
+                case Season.Winter: Game1.currentSeason = "winter"; break;
+                default: break;
+            }
+        }
+
+        public static void SetMonth(int month)
+        {
+            switch (month)
+            {
+                case 1: Game1.currentSeason = "spring"; break;
+                case 2: Game1.currentSeason = "summer"; break;
+                case 3: Game1.currentSeason = "fall"; break;
+                case 4: Game1.currentSeason = "winter"; break;
+                default: break;
+            }
+        }
+
+        public static void SetDay(int day)
+        {
+            if (28 >= day && 1 <= day)
+            {
+                day = day - Game1.dayOfMonth;
+                Game1.stats.DaysPlayed += (uint)day;
+                Game1.dayOfMonth += day;
+            }
+        }
+
         /// <summary>
         ///         List of farmers of saved games
         /// </summary>
