@@ -13,10 +13,13 @@ namespace DedicatedServer.HostAutomatorStages
         /// <summary> default value and set at each end of the day </summary>
         Uninit = 0,
 
-        /// <summary> Set after the day is started </summary>
+        /// <summary> Set after the day is started, 
+        /// <br/>   <see cref="TransitionFestivalAttendanceBehaviorLink.OnDayStarted"/></summary>
         NoFestivalDay,
 
-        /// <summary> Set after the day is started, waits for the participation time slot </summary>
+        /// <summary> Set after the day is started,
+        /// <br/>   <see cref="TransitionFestivalAttendanceBehaviorLink.OnDayStarted"/>,
+        /// <br/>   waits for the participation time slot </summary>
         FestivalDay,
 
 
@@ -57,8 +60,7 @@ namespace DedicatedServer.HostAutomatorStages
 
         public override void Process()
         {
-            bool isEvent = null != Game1.CurrentEvent;
-            
+            bool isEvent;
             int ready;
             int required;
             switch (TransitionFestival)
@@ -131,6 +133,7 @@ namespace DedicatedServer.HostAutomatorStages
                         break;
                     }
 
+                    isEvent = null != Game1.CurrentEvent;
                     if (isEvent)
                     {
                         if (Festivals.IsHostDecidingNextStep)
@@ -180,11 +183,15 @@ namespace DedicatedServer.HostAutomatorStages
                         festivalChatBox.Disable();
 
                         // At the Stardw Valley Fair, you must manually exit the festival after the event.
-                        TransitionFestival = (Festivals.IsTodayStardewValleyFair)
-                            ? TransitionFestival.AtFestival
-                            : TransitionFestival.EndingFestival;
-
-                        DelayForDanceOfTheMoonlightJellies();
+                        if (Festivals.IsTodayStardewValleyFair)
+                        {
+                            TransitionFestival = TransitionFestival.AtFestival;
+                        }
+                        else
+                        {
+                            TransitionFestival = TransitionFestival.EndingFestival;
+                            DelayForDanceOfTheMoonlightJellies();
+                        }
 
                         break;
                     }
@@ -268,6 +275,7 @@ namespace DedicatedServer.HostAutomatorStages
                         OnEventMassDisconnect();
                     }
 
+                    isEvent = null != Game1.CurrentEvent;
                     if (false == isEvent)
                     {
                         TransitionFestival = TransitionFestival.FestivalIsOver;
@@ -338,8 +346,6 @@ namespace DedicatedServer.HostAutomatorStages
             MainController.helper.Events.GameLoop.DayStarted += OnDayStarted;
             MainController.helper.Events.GameLoop.DayEnding += OnDayEnding;
 
-#warning Debug
-            TransitionFestivalChanged += (o, t) => SendChatMessage($"state: {t.ToString()}");
 
             TransitionFestivalChanged += TransitionFestivalChangedHandler;
             EventMassDisconnect += (o, s) => Sleeping.ShouldSleepOverwrite = true;
@@ -376,7 +382,9 @@ namespace DedicatedServer.HostAutomatorStages
         }
 
         private void OnTransitionFestivalChanged()
-            => TransitionFestivalChanged?.Invoke(this, TransitionFestival);
+        {
+            TransitionFestivalChanged?.Invoke(this, TransitionFestival);
+        }
 
         private void TransitionFestivalChangedHandler(object sender, TransitionFestival transitionFestival)
         {
@@ -413,7 +421,7 @@ namespace DedicatedServer.HostAutomatorStages
         private void OnEventEnded()
             => EventEnded?.Invoke(this, EventArgs.Empty);
 
-
+        
         private void OnEventMassDisconnect()
         {
             if (false == _hasEventMassDisconnectInvokedBefore)
