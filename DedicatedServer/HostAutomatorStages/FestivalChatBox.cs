@@ -31,7 +31,7 @@ namespace DedicatedServer.HostAutomatorStages
 
         private const string entryMessage1 = "When you wish to start the festival, type \"start\" into chat.";
         private const string entryMessage2 = "If you'd like to cancel your vote, type \"cancel\".";
-        private const string entryMessage3 = "If you stand for Lewis for {0} seconds, that counts as a request to start.";
+        private const string entryMessage3 = "Standing in front of Lewis for {0} seconds, counts as start.";
 
         private Dictionary<long, FarmerDecisionDto> FarmerDecision = new();
 

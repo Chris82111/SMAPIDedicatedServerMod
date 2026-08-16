@@ -79,20 +79,18 @@ namespace DedicatedServer.Utils
                 default: return null;
             }
         }
-
+        
         /// <summary>
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayEggFestival
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth == 13;
 
         /// <summary>
         /// <br/>   Time passes: true
-        /// <br/>   No real festival, no trigger
-        /// <br/>   Tested: Player disconnection, reconnection is possible
+        /// <br/>   No real festival, no trigger, reconnection is possible
         /// </summary>
         public static bool IsTodayDesertFestival
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 17;
@@ -101,7 +99,6 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The end must be triggerd
-        /// <br/>   Tested: Player disconnection, visible, vote
         /// </summary>
         public static bool IsTodayFlowerDance
             => Game1.currentSeason.EqualsIgnoreCase("spring") && Game1.dayOfMonth == 24;
@@ -110,15 +107,13 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayLuau
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth == 11;
 
         /// <summary>
         /// <br/>   Time passes: true
-        /// <br/>   No real festival, no trigger
-        /// <br/>   Tested: Nothing to be tested
+        /// <br/>   No real festival, no trigger, reconnection is possible
         /// </summary>
         public static bool IsTodayTroutDerby
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth >= 20 && Game1.dayOfMonth <= 21;
@@ -127,7 +122,6 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayDanceOfTheMoonlightJellies
             => Game1.currentSeason.EqualsIgnoreCase("summer") && Game1.dayOfMonth == 28;
@@ -136,7 +130,6 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The festival can be left at any time. You must manually exit the event after you have triggered the next steps.
-        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayStardewValleyFair
             => Game1.currentSeason.EqualsIgnoreCase("fall") && Game1.dayOfMonth == 16;
@@ -145,7 +138,6 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   It's a festival, but you can just leave whenever you want, no trigger
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, left normal
         /// </summary>
         public static bool IsTodaySpiritsEve
             => Game1.currentSeason.EqualsIgnoreCase("fall") && Game1.dayOfMonth == 27;
@@ -154,23 +146,20 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   NPC the host must talk to in order to trigger the next step: Lewis
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, visible, vote, left normal
         /// </summary>
         public static bool IsTodayFestivalOfIce
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth == 8;
 
         /// <summary>
         /// <br/>   Time passes: true
-        /// <br/>   No real festival, no trigger
-        /// <br/>   Tested: Player disconnection, reconnection is possible
+        /// <br/>   No real festival, no trigger, reconnection is possible
         /// </summary>
         public static bool IsTodaySquidFest
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth >= 12 && Game1.dayOfMonth <= 13;
 
         /// <summary>
         /// <br/>   Time passes: true
-        /// <br/>   No real festival, no trigger
-        /// <br/>   Tested: Player disconnection, reconnection is possible
+        /// <br/>   No real festival, no trigger, reconnection is possible
         /// </summary>
         public static bool IsTodayBeachNightMarket
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 17;
@@ -179,7 +168,6 @@ namespace DedicatedServer.Utils
         /// <br/>   Time passes: false
         /// <br/>   It's a festival, but you can just leave whenever you want, no trigger
         /// <br/>   The festival can be left at any time.
-        /// <br/>   Tested: Player disconnection, left normal
         /// </summary>
         public static bool IsTodayFeastOfTheWinterStar
             => Game1.currentSeason.EqualsIgnoreCase("winter") && Game1.dayOfMonth == 25;
@@ -317,7 +305,7 @@ namespace DedicatedServer.Utils
         /// Gets the location of the festival
         /// </summary>
         /// <returns>Location of the festival, or null if there is no festival today</returns>
-        public static string GetLocationOfFestival()
+        public static string GetStandardLocationOfFestival()
         {
             if (false == IsFestivalDay()) { return null; }
 

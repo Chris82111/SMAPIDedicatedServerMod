@@ -44,7 +44,6 @@ namespace DedicatedServer.HostAutomatorStages
         /// <summary> Transition period until the game ends the festival </summary>
         EndingFestival,
 
-
         /// <summary> The festival is over </summary>
         FestivalIsOver,        
     }
@@ -185,6 +184,8 @@ namespace DedicatedServer.HostAutomatorStages
                             ? TransitionFestival.AtFestival
                             : TransitionFestival.EndingFestival;
 
+                        DelayForDanceOfTheMoonlightJellies();
+
                         break;
                     }
 
@@ -206,6 +207,7 @@ namespace DedicatedServer.HostAutomatorStages
                         // the host must end the event 
                         OnEventMassDisconnect();
                         TransitionFestival = TransitionFestival.EndingFestival;
+                        DelayForDanceOfTheMoonlightJellies();
                         WaitForFestivalEnd();
                         break;
                     }
@@ -233,6 +235,7 @@ namespace DedicatedServer.HostAutomatorStages
                     if (required <= ready)
                     {
                         TransitionFestival = TransitionFestival.EndingFestival;
+                        DelayForDanceOfTheMoonlightJellies();
                         break;
                     }
                     break;
@@ -250,6 +253,7 @@ namespace DedicatedServer.HostAutomatorStages
                     if (required <= ready)
                     {
                         TransitionFestival = TransitionFestival.EndingFestival;
+                        DelayForDanceOfTheMoonlightJellies();
                         break;
                     }
                     break;
@@ -419,12 +423,25 @@ namespace DedicatedServer.HostAutomatorStages
             }
         }
 
+        /// <summary>
+        ///         The "Dance of the Moonlight Jellies" festival creates a new festival
+        /// <br/>   after the first one, so a waiting period must be observed; otherwise,
+        /// <br/>   the next state will be triggered too early.
+        /// </summary>
+        private void DelayForDanceOfTheMoonlightJellies()
+        {
+            if (Festivals.IsTodayDanceOfTheMoonlightJellies)
+            {
+                WaitTime = 60 * 15;
+            }
+        }
+                    
 
         #region Controls whether the host joins or leaves an event
 
         private void WaitForFestivalAttendance()
         {
-            var location = Game1.getLocationFromName(Festivals.GetLocationOfFestival());
+            var location = Game1.getLocationFromName(Festivals.GetStandardLocationOfFestival());
             var warp = new Warp(0, 0, location.NameOrUniqueName, 0, 0, false);
             Game1.netReady.SetLocalReady("festivalStart", ready: true);
             Game1.activeClickableMenu = new ReadyCheckDialog("festivalStart", allowCancel: true, delegate (Farmer who)
