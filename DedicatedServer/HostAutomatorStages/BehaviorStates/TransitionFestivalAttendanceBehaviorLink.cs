@@ -149,6 +149,7 @@ namespace DedicatedServer.HostAutomatorStages
                     break;
 
                 case TransitionFestival.AtFestivalChatBox:
+                    festivalChatBox.Update();
                     festivalChatBox.CheckVisible();
 
                     var peopleVoted = festivalChatBox.NumberOfPeopleWhoVoted();

@@ -9,22 +9,46 @@ namespace DedicatedServer.HostAutomatorStages
 {
     class FarmerDecisionDto
     {
+        public Farmer Farmer { get; set; } = null;
         public bool Vote { get; set; } = false;
+        public bool InFront { get; set; } = false;
         public bool Visible { get; set; } = false;
+        public DateTime Timeout { get; set; } = DateTime.MaxValue;
+
+        public FarmerDecisionDto(Farmer farmer)
+        {
+            Farmer = farmer;
+        }
     }
 
     internal class FestivalChatBox
     {
-        private const string entryMessage = "When you wish to start the festival, type \"start\" into chat. If you'd like to cancel your vote, type \"cancel\".";
+        public event EventHandler InFrontEntered;
+        public event EventHandler InFrontExited;
 
-        public Dictionary<long, FarmerDecisionDto> FarmerDecision = new();
+        public event EventHandler VisibleEntered;
+        public event EventHandler VisibleExited;
 
-        public NPC Lewis { get; private set; }
+        private const string entryMessage1 = "When you wish to start the festival, type \"start\" into chat.";
+        private const string entryMessage2 = "If you'd like to cancel your vote, type \"cancel\".";
+        private const string entryMessage3 = "If you stand for Lewis for {0} seconds, that counts as a request to start.";
+
+        private Dictionary<long, FarmerDecisionDto> FarmerDecision = new();
+
+        private NPC Lewis { get; set; }
 
         private bool enabled = false;
 
+        private const int WaitTimeSeconds = 10;
+
         public FestivalChatBox()
         {
+#warning Debug
+            InFrontEntered += (s, e) => SendChatMessage($"In range");
+            InFrontExited += (s, e) => SendChatMessage($"Out range");
+
+            VisibleEntered += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
+            VisibleExited += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
         }
 
         public bool IsEnabled()
@@ -38,8 +62,11 @@ namespace DedicatedServer.HostAutomatorStages
 
                 Update();
 
-                MainController.chatBox.textBoxEnter(entryMessage);
                 MainController.chatBox.ChatReceived += OnChatReceived;
+
+                MainController.chatBox.textBoxEnter(entryMessage1);
+                MainController.chatBox.textBoxEnter(entryMessage2);
+                MainController.chatBox.textBoxEnter(string.Format(entryMessage3, WaitTimeSeconds));
             }
         }
 
@@ -62,47 +89,32 @@ namespace DedicatedServer.HostAutomatorStages
             Lewis = Npc.GetNpc("Lewis");
         }
 
-        public void CheckVisible()
-        {
-            foreach (var farmer in Game1.otherFarmers.Values.ToList())
-            {
-                if (Npc.IsFarmerInFront(farmer, Lewis, 2, 0))
-                {
-                    VisibleStart(farmer.UniqueMultiplayerID);
-                }
-                else
-                {
-                    VisibleCancel(farmer.UniqueMultiplayerID);
-                }
-            }
-        }
 
-        public int NumberOfPeopleWhoVoted()
-        {
-            if (false == enabled) { return -1; }
+        private void OnInFrontEntered()
+            => InFrontEntered?.Invoke(this, EventArgs.Empty);
 
-            if (MainController.NumberOfPlayers != FarmerDecision.Count)
-            {
-                Update();
-            }
+        private void OnInFrontExited()
+            => InFrontExited?.Invoke(this, EventArgs.Empty);
 
-            return FarmerDecision.Count(f => f.Value.Visible || f.Value.Vote);
-        }
+        private void OnVisibleEntered()
+            => VisibleEntered?.Invoke(this, EventArgs.Empty);
 
-        public int NumberOfVoters()
-        {
-            if (false == enabled){ return -1; }
+        private void OnVisibleExited()
+            => VisibleExited?.Invoke(this, EventArgs.Empty);
 
-            if (MainController.NumberOfPlayers != FarmerDecision.Count)
-            {
-                Update();
-            }
-
-            return FarmerDecision.Count();
-        }
-
+        /// <summary>
+        ///         Updates the <see cref="FarmerDecision"/> dictionary, must be called periodically.
+        /// <br/> 
+        /// <br/>   Only if the number of players (<see cref="MainController.NumberOfPlayers"/>)
+        /// <br/>   does not match the current number of players in the dictionary.
+        /// <br/>   This works because no new players can join during an event.
+        /// <br/>   The only possibility is for a connection to be interrupted,
+        /// <br/>   which reduces the number of players.
+        /// </summary>
         public void Update()
         {
+            if (MainController.NumberOfPlayers == FarmerDecision.Count) { return; }
+
             var dummy = new Dictionary<long, FarmerDecisionDto>();
             FarmerDecisionDto item;
             foreach (var farmer in MainController.OnlineFarmers())
@@ -113,37 +125,70 @@ namespace DedicatedServer.HostAutomatorStages
                 }
                 else
                 {
-                    dummy.Add(farmer.Key, new FarmerDecisionDto());
-                }  
+                    dummy.Add(farmer.Key, new FarmerDecisionDto(farmer.Value));
+                }
             }
 
             FarmerDecision = dummy;
         }
 
-        private void VisibleStart(long id)
+        public void CheckVisible()
         {
-            if (false == FarmerDecision.TryGetValue(id, out var item)) { return; }
-
-            if (item.Vote) { return; }
-
-            if (false == item.Visible)
+            foreach (var dto in FarmerDecision.Values)
             {
-                item.Visible = true;
-                SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
+#error What is this I used values to get the item???
+                if (false == FarmerDecision.TryGetValue(dto.Farmer.UniqueMultiplayerID, out var item)) { continue; }
+
+                if (Npc.IsFarmerInFront(dto.Farmer, Lewis, 2, 0))
+                {
+                    if (item.Vote) { return; }
+
+                    if (false == item.InFront)
+                    {
+                        item.InFront = true;
+                        item.Timeout = DateTime.UtcNow.AddSeconds(WaitTimeSeconds);
+                        OnInFrontEntered();
+                    }
+                    else
+                    {
+                        if (DateTime.UtcNow >= item.Timeout)
+                        {
+                            item.Visible = true;
+                            OnVisibleEntered();
+                        }
+                    }
+                }
+                else
+                {
+                    if (item.Vote) { return; }
+
+                    if (true == item.InFront)
+                    {
+                        item.InFront = false;
+                        OnInFrontExited();
+
+                        if (true == item.Visible)
+                        {
+                            item.Visible = false;
+                            OnVisibleExited();
+                        }
+                    }
+                }
             }
         }
 
-        private void VisibleCancel(long id)
-        { 
-            if (false == FarmerDecision.TryGetValue(id, out var item)) { return; }
+        public int NumberOfPeopleWhoVoted()
+        {
+            if (false == enabled) { return -1; }
 
-            if (item.Vote) { return; }
+            return FarmerDecision.Count(f => f.Value.Visible || f.Value.Vote);
+        }
 
-            if (true == item.Visible)
-            {
-                item.Visible = false;
-                SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
-            }
+        public int NumberOfVoters()
+        {
+            if (false == enabled){ return -1; }
+
+            return FarmerDecision.Count;
         }
 
         private void OnChatReceived(object sender, ChatEventArgs e)
