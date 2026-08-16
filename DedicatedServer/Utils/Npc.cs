@@ -19,18 +19,6 @@ namespace DedicatedServer.Utils
                 : Game1.CurrentEvent.actors.FirstOrDefault(x => 0 == string.Compare(x.Name, name, StringComparison.OrdinalIgnoreCase));
 
         /// <summary>
-        /// This is true for every menu, including a dialogue with an NPC
-        /// </summary>
-        /// <param name="farmer"></param>
-        /// <returns>
-        ///         true : A menu is open
-        /// <br/>   false: No menu is open</returns>
-        public static bool HasMenuOpen(Farmer farmer)
-        {
-            return farmer.hasMenuOpen.Value;
-        }
-
-        /// <summary>
         /// Calculates the distance between a farmer and an NPC
         /// </summary>
         /// <param name="farmer"></param>

@@ -43,10 +43,6 @@ namespace DedicatedServer.HostAutomatorStages
 
         public FestivalChatBox()
         {
-#warning Debug
-            InFrontEntered += (s, e) => SendChatMessage($"In range");
-            InFrontExited += (s, e) => SendChatMessage($"Out range");
-
             VisibleEntered += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
             VisibleExited += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
         }
@@ -134,12 +130,9 @@ namespace DedicatedServer.HostAutomatorStages
 
         public void CheckVisible()
         {
-            foreach (var dto in FarmerDecision.Values)
+            foreach (var item in FarmerDecision.Values)
             {
-#error What is this I used values to get the item???
-                if (false == FarmerDecision.TryGetValue(dto.Farmer.UniqueMultiplayerID, out var item)) { continue; }
-
-                if (Npc.IsFarmerInFront(dto.Farmer, Lewis, 2, 0))
+                if (Npc.IsFarmerInFront(item.Farmer, Lewis, 2, 0) && false == HasMenuOpen(item.Farmer))
                 {
                     if (item.Vote) { return; }
 
@@ -225,6 +218,16 @@ namespace DedicatedServer.HostAutomatorStages
                     break;
             }
         }
+
+        /// <summary>
+        /// This is true for every menu, including a dialogue with an NPC
+        /// </summary>
+        /// <param name="farmer"></param>
+        /// <returns>
+        ///         true : A menu is open
+        /// <br/>   false: No menu is open</returns>
+        public static bool HasMenuOpen(Farmer farmer)
+            => farmer.hasMenuOpen.Value;
 
         private static void SendChatMessage(string message)
             => MainController.chatBox.textBoxEnter(message);
