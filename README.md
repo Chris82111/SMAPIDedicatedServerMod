@@ -12,6 +12,12 @@
 
 This mod provides a dedicated (headless) server for Stardew Valley, powered by SMAPI. It turns the host farmer into an automated bot to facilitate multiplayer gameplay.
 
+## In-Game Features
+
+### Festivals
+
+In some festivals, the host starts the event. Players must vote using `start` and `cancel`. Once all players have agreed to start, the host begins the event. Alternatively, a player can stand in front of Lewis. After 10 seconds, this is also considered consent to start. If a player steps back from Lewis or opens a menu, their consent is revoked.
+
 ## Configuration File
 
 Upon running SMAPI with the mod installed for the first time, a `config.json` file will be generated in the mod's folder. This file specifies which farm will be loaded on startup, farm creation options, host automation details, and other mod configuration options. Default values will be provided, which can then be modified. Here is an overview of the available settings:
