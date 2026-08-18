@@ -282,6 +282,16 @@ namespace DedicatedServer.MessageCommands
                     #region DEBUG_COMMANDS
                     #if USE_DEBUG
 
+                    case "t9":
+                        Game1.timeOfDay = 900;
+                        break;
+                    case "t18":
+                        Game1.timeOfDay = 1800;
+                        break;
+                    case "t22":
+                        Game1.timeOfDay = 2200;
+                        break;
+
                     case "timereset":
                         if (Game1.dayOfMonth > 1)
                         {
@@ -290,14 +300,14 @@ namespace DedicatedServer.MessageCommands
                         }
                         break;
 
+                    case "settomonth":
+                        int month = int.TryParse(param, out int resultMonth) ? resultMonth : 0;
+                        MainController.SetMonth(month);
+                        break;
+
                     case "settoday":
-                        int days = int.TryParse(param, out int result) ? result : 0;
-                        if (days > Game1.dayOfMonth)
-                        {
-                            days = days - Game1.dayOfMonth;
-                            Game1.stats.DaysPlayed += (uint)days;
-                            Game1.dayOfMonth += days;
-                        }
+                        int day = int.TryParse(param, out int resultDay) ? resultDay : 0;
+                        MainController.SetDay(day);
                         break;
 
                     case "seed":
