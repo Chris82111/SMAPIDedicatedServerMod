@@ -14,6 +14,7 @@ namespace DedicatedServer.Utils
         private static readonly Beach beachLocation = Game1.getLocationFromName("Beach") as Beach;
         private static readonly Mountain mountainLocation = Game1.getLocationFromName("Mountain") as Mountain;
         private static readonly CommunityCenter communityCenterLocation = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
+        private static readonly Desert desertLocation = Game1.getLocationFromName("Desert") as Desert;
 
         private static Point FarmEntryLocation => farmLocation.GetMainFarmHouseEntry();
         private static Point FarmHouseEntryLocation => farmHouseLocation.getEntryLocation();
@@ -26,6 +27,7 @@ namespace DedicatedServer.Utils
         private static readonly Point pierreLocation = new Point(43, 57);
         private static readonly Point communityCenterEntranceLocation = new Point(33, 22);
         private static readonly Point wizzardLocation = new Point(5, 27);
+        private static readonly Point busLocation = new Point(18, 28);
 
         /// <summary>
         ///         Warppoint on the farm
@@ -135,6 +137,15 @@ namespace DedicatedServer.Utils
             wizzardLocation.X, wizzardLocation.Y,
             forestLocation.NameOrUniqueName,
             wizzardLocation.X, wizzardLocation.Y,
+            false, false);
+
+        /// <summary>
+        ///         Warp to the desert, right in front of the bus
+        /// </summary>
+        public static readonly Warp desertWarp = new Warp(
+            busLocation.X, busLocation.Y,
+            desertLocation.NameOrUniqueName,
+            busLocation.X, busLocation.Y,
             false, false);
 
         /// <summary>

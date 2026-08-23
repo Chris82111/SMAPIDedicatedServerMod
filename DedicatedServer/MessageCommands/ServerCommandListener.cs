@@ -600,6 +600,10 @@ namespace DedicatedServer.MessageCommands
                         MainController.Warp(WarpPoints.wizzardWarp);
                         break;
 
+                    case "desert":
+                        MainController.Warp(WarpPoints.desertWarp);
+                        break;                
+
                     case "location":
                         var location = Game1.player.Tile;
                         MainController.chatBox.textBoxEnter("location: " + Game1.player.currentLocation.ToString());
