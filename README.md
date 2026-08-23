@@ -24,6 +24,7 @@ Upon running SMAPI with the mod installed for the first time, a `config.json` fi
 
 ### Startup options
 
+- `Port`: The game's port can be customized. `null` prevents the port from being overwritten.
 - `FarmName`: The name of the farm. If a farm with this name exists, it will automatically be loaded and hosted for co-op. Otherwise, a new farm will be created using the specified farm creation options and then hosted for co-op.
 
 ### Farm Creation Options

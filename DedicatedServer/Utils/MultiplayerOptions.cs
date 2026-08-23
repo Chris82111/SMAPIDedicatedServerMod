@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI.Events;
+﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using System.Linq;
 
@@ -287,6 +288,7 @@ namespace DedicatedServer.Utils
                         SaveInviteCode();
                         tryActivatingState = TryActivatingStates.None;
                         MainController.chatBox.textBoxEnter($"Could receive the invitation code {InviteCode}" + TextColor.Green);
+                        MainController.monitor.Log($"Could receive the invitation code {InviteCode}", LogLevel.Warn);
                         return;
                     }
                     if(0 == time)
@@ -294,6 +296,7 @@ namespace DedicatedServer.Utils
                         tryActivatingState = TryActivatingStates.DisableServer;
                     }
                     MainController.chatBox.textBoxEnter($"Attention: Server will shut down in {time} seconds" + TextColor.Yellow);
+                    MainController.monitor.Log($"Attention: Server will shut down in {time} seconds", LogLevel.Debug);
                     break;
 
                 case TryActivatingStates.DisableServer:
@@ -308,6 +311,7 @@ namespace DedicatedServer.Utils
                         tryActivatingState = TryActivatingStates.EnableServer;
                     }
                     MainController.chatBox.textBoxEnter($"Attention: The server is started in {time} seconds" + TextColor.Yellow);
+                    MainController.monitor.Log($"Attention: The server is started in {time} seconds", LogLevel.Debug);
                     break;
 
                 case TryActivatingStates.EnableServer:
@@ -322,12 +326,14 @@ namespace DedicatedServer.Utils
                         SaveInviteCode();
                         tryActivatingState = TryActivatingStates.None;
                         // chatBox.textBoxEnter($"Could receive the invitation code {InviteCode}" + TextColor.Green);
+                        MainController.monitor.Log($"Could receive the invitation code {InviteCode}", LogLevel.Info);
                         return;
                     }
                     if (0 == time)
                     {
                         tryActivatingState = TryActivatingStates.None;
                         // chatBox.textBoxEnter($"Attention: Invitation code could not be retrieved" + TextColor.Red);
+                        MainController.monitor.Log($"Attention: Invitation code could not be retrieved", LogLevel.Warn);
                         return;
                     }
                     // chatBox.textBoxEnter($"Attention: Try to get the invitation code, remaining time {time} seconds" + TextColor.Yellow);

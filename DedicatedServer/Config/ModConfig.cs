@@ -1,7 +1,18 @@
-﻿namespace DedicatedServer.Config
+﻿using System;
+
+namespace DedicatedServer.Config
 {
+    /// <summary>
+    ///         By default, the file is located at the following path in Windows:
+    /// <br/>   <c>"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\DedicatedServer\"</c>
+    /// </summary>
     public class ModConfig
     {
+        /// <summary>
+        /// Server Port, if this value is set to null, this mod will not change the port, so Stardew Valley's default port (24642) will be used.
+        /// </summary>
+        public UInt16? Port { get; set; } = null;
+
         public string FarmName { get; set; } = "Stardew";
 
         // Options are 0, 1, 2, or 3.
