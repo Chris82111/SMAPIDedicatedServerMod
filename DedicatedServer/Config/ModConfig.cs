@@ -18,6 +18,11 @@ namespace DedicatedServer.Config
         // Options are 0, 1, 2, or 3.
         public int StartingCabins { get; set; } = 1;
 
+        /// <summary>
+        /// Sets the ability to buy new houses from Robin. Minimum and standard is 8. 
+        /// </summary>
+        public int PlayerLimit { get; set; } = 8;
+
         // Options are "nearby" or "separate"
         public string CabinLayout { get; set; } = "separate";
         

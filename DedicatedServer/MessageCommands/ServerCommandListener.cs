@@ -363,6 +363,10 @@ namespace DedicatedServer.MessageCommands
                         Game1.player.addItemToInventory(new StardewValley.Object(StardewValley.Object.iridiumID, 999));
                         break;
 
+                    case "playerlimit":
+                        int players = int.TryParse(param, out int resultPlayers) ? resultPlayers : 0;
+                        Network.Multiplayer.SetPlayerLimit(players);
+                        break;
 
                     case "com11":
                         Game1.player.addItemToInventory(new StardewValley.Object(wildHorseRadish, 1));

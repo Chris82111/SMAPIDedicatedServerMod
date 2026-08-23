@@ -29,6 +29,8 @@ namespace DedicatedServer
 
             Port.Patch(ModManifest.UniqueID, base.Monitor, this.config);
 
+            Network.Multiplayer.SetPlayerLimit(this.config);
+
             this.waitCounter = 60;
             this.Enable();
         }
