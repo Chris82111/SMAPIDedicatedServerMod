@@ -49,7 +49,7 @@ namespace DedicatedServer.HostAutomatorStages
                         ){
                             exitFarmHouseStates = ExitFarmHouseStates.WarpToFarm;
                             MainController.IdleLockEnable();
-                            MainController.Warp(WarpPoints.FarmWarp);
+                            MainController.Warp(WarpPoints.farmWarp);
                         }
                     }
                     break;
@@ -72,7 +72,7 @@ namespace DedicatedServer.HostAutomatorStages
                         ){
                             exitFarmHouseStates = ExitFarmHouseStates.WarpToFarmhouse;
                             MainController.IdleLockEnable();
-                            MainController.Warp(WarpPoints.FarmHouseWarp);
+                            MainController.Warp(WarpPoints.farmHouseWarp);
                         }
                     }
                     break;

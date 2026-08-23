@@ -35,7 +35,7 @@ namespace DedicatedServer.HostAutomatorStages
                     isGettingFishingRod = false;
                     hasSeenEvent = true;
                     MainController.IdleLockEnable();
-                    Game1.player.warpFarmer(WarpPoints.FarmWarp);
+                    Game1.player.warpFarmer(WarpPoints.farmWarp);
                 }
             }
         }

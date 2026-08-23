@@ -31,7 +31,7 @@ namespace DedicatedServer.HostAutomatorStages
                     isEnding = false;
                     hasSeenEvent = true;
                     MainController.IdleLockEnable();
-                    MainController.Warp(WarpPoints.FarmWarp);
+                    MainController.Warp(WarpPoints.farmWarp);
                 }
             }   
         }
