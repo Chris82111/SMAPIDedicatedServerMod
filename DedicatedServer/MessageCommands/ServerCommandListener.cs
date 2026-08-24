@@ -363,6 +363,10 @@ namespace DedicatedServer.MessageCommands
                         Game1.player.addItemToInventory(new StardewValley.Object(StardewValley.Object.iridiumID, 999));
                         break;
 
+                    case "playerlimit":
+                        int players = int.TryParse(param, out int resultPlayers) ? resultPlayers : 0;
+                        Network.Multiplayer.SetPlayerLimit(players);
+                        break;
 
                     case "com11":
                         Game1.player.addItemToInventory(new StardewValley.Object(wildHorseRadish, 1));
@@ -527,6 +531,27 @@ namespace DedicatedServer.MessageCommands
                         break;
 
 
+                    case "rescopperbars":
+                        Game1.player.addItemToInventory(new StardewValley.Object(StardewValley.Object.copperBarQID, 5));
+                        break;
+
+                    case "tool0":
+                        ServerHost.UpdateAllTools(0);
+                        return;
+                    case "tool1":
+                        ServerHost.UpdateAllTools(1);
+                        return;
+                    case "tool2":
+                        ServerHost.UpdateAllTools(2);
+                        return;
+                    case "tool3":
+                        ServerHost.UpdateAllTools(3);
+                        return;
+                    case "tool4":
+                        ServerHost.UpdateAllTools(4);
+                        break;
+
+
                     case "wood":
                         Game1.player.addItemToInventory(new StardewValley.Object(StardewValley.Object.woodID, 999));
                         break;
@@ -561,11 +586,11 @@ namespace DedicatedServer.MessageCommands
                         break;
 
                     case "farm":
-                        MainController.Warp(WarpPoints.FarmWarp);
+                        MainController.Warp(WarpPoints.farmWarp);
                         break;
 
                     case "house":
-                        MainController.Warp(WarpPoints.FarmHouseWarp);
+                        MainController.Warp(WarpPoints.farmHouseWarp);
                         break;
 
                     case "mine":

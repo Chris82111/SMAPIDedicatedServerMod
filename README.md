@@ -25,6 +25,7 @@ Upon running SMAPI with the mod installed for the first time, a `config.json` fi
 ### Startup options
 
 - `Port`: The game's port can be customized. `null` prevents the port from being overwritten.
+- `PlayerLimit`: Sets the maximum number of houses you can buy from Robin. The minimum and default value is 8.
 - `FarmName`: The name of the farm. If a farm with this name exists, it will automatically be loaded and hosted for co-op. Otherwise, a new farm will be created using the specified farm creation options and then hosted for co-op.
 
 ### Farm Creation Options

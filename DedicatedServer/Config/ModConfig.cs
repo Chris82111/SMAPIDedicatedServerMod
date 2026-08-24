@@ -18,6 +18,11 @@ namespace DedicatedServer.Config
         // Options are 0, 1, 2, or 3.
         public int StartingCabins { get; set; } = 1;
 
+        /// <summary>
+        /// Sets the maximum number of houses you can buy from Robin. The minimum and default value is 8.
+        /// </summary>
+        public int PlayerLimit { get; set; } = 8;
+
         // Options are "nearby" or "separate"
         public string CabinLayout { get; set; } = "separate";
         
