@@ -1,5 +1,6 @@
 ﻿using DedicatedServer.Config;
 using DedicatedServer.HostAutomatorStages;
+using DedicatedServer.Network;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -25,6 +26,11 @@ namespace DedicatedServer
         {
             this.helper = helper;
             this.config = helper.ReadConfig<ModConfig>();
+
+            Port.Patch(ModManifest.UniqueID, base.Monitor, this.config);
+
+            Network.Multiplayer.Init(base.Monitor);
+            Network.Multiplayer.SetPlayerLimit(this.config);
 
             this.waitCounter = 60;
             this.Enable();

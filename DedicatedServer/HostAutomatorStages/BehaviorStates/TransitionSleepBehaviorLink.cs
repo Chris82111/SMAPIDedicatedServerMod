@@ -59,7 +59,7 @@ namespace DedicatedServer.HostAutomatorStages
                 {
                     MainController.monitor.Log($"Warp to sleep", LogLevel.Debug);
 
-                    MainController.Warp(WarpPoints.FarmHouseWarp);
+                    MainController.Warp(WarpPoints.farmHouseWarp);
                     WaitTime = 60;
                 }
             }
