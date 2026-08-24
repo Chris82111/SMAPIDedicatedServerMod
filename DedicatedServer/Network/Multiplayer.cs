@@ -1,4 +1,5 @@
 ﻿using DedicatedServer.Config;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Reflection;
@@ -12,6 +13,13 @@ namespace DedicatedServer.Network
         /// </summary>
         private static StardewValley.Multiplayer _multiplayer = (StardewValley.Multiplayer)
             typeof(Game1).GetField("multiplayer", BindingFlags.NonPublic | BindingFlags.Static).GetValue(Game1.game1);
+
+        private static IMonitor _monitor;
+
+        public static void Init(IMonitor monitor)
+        {
+            _monitor = monitor;
+        }
 
         /// <summary>
         ///         Unlocks the ability to buy new houses from Robin.
@@ -31,6 +39,8 @@ namespace DedicatedServer.Network
             playerLimit = Math.Max(8, playerLimit);
 
             _multiplayer.playerLimit = playerLimit;
+
+            _monitor?.Log($"The maximum number of players has been set to {GetPlayerLimit()}.", LogLevel.Info);
         }
 
         public static void SetPlayerLimit(ModConfig modConfig)
