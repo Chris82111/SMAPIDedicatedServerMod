@@ -1,7 +1,9 @@
 {
-  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "Zum Starten des Festivals, gib im Chat \"start\" ein.",
-  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "Zum Abbrechen des Festivals, gib im Chat \"cancel\" ein.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "Zum Starten des Festivals, gib im Chat \"{{start}}\" ein.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "Zum Abbrechen des Festivals, gib im Chat \"{{cancel}}\" ein.",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3": "{{seconds}} Sekunden vor Lewis stehen, gilt als Start.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyStart": "start",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyCancel": "stop",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} Stimmen wurden abgegeben.",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Abstimmung gestartet",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Abstimmung abgebrochen"
