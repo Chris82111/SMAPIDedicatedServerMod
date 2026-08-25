@@ -1,0 +1,8 @@
+{
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "Pour lancer le festival, tapez \"start\" dans le chat.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "Si vous souhaitez annuler votre vote, tapez \"cancel\".",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3": "{{seconds}} secondes avant Lewis, c'est le départ.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} votes exprimés.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Vote lancé",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote annulé"
+}

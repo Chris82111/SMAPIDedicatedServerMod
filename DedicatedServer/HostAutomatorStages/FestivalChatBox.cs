@@ -29,10 +29,6 @@ namespace DedicatedServer.HostAutomatorStages
         public event EventHandler VisibleEntered;
         public event EventHandler VisibleExited;
 
-        private const string entryMessage1 = "When you wish to start the festival, type \"start\" into chat.";
-        private const string entryMessage2 = "If you'd like to cancel your vote, type \"cancel\".";
-        private const string entryMessage3 = "Standing in front of Lewis for {0} seconds, counts as start.";
-
         private Dictionary<long, FarmerDecisionDto> FarmerDecision = new();
 
         private NPC Lewis { get; set; }
@@ -43,8 +39,8 @@ namespace DedicatedServer.HostAutomatorStages
 
         public FestivalChatBox()
         {
-            VisibleEntered += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
-            VisibleExited += (s, e) => SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
+            VisibleEntered += (s, e) => SendUpdate();
+            VisibleExited += (s, e) => SendUpdate();
         }
 
         public bool IsEnabled()
@@ -60,9 +56,13 @@ namespace DedicatedServer.HostAutomatorStages
 
                 MainController.chatBox.ChatReceived += OnChatReceived;
 
-                MainController.chatBox.textBoxEnter(entryMessage1);
-                MainController.chatBox.textBoxEnter(entryMessage2);
-                MainController.chatBox.textBoxEnter(string.Format(entryMessage3, WaitTimeSeconds));
+                MainController.chatBox.textBoxEnter(MainController.helper.Translation.Get(
+                    "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1"));
+                MainController.chatBox.textBoxEnter(MainController.helper.Translation.Get(
+                    "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2"));
+                MainController.chatBox.textBoxEnter(MainController.helper.Translation.Get(
+                    "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3", 
+                    new { seconds = WaitTimeSeconds }));
             }
         }
 
@@ -186,6 +186,13 @@ namespace DedicatedServer.HostAutomatorStages
 
             return FarmerDecision.Count;
         }
+        
+        private void SendUpdate()
+        {
+            SendChatMessage(MainController.helper.Translation.Get(
+                    "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate",
+                    new { voted = NumberOfPeopleWhoVoted(), voters = NumberOfVoters() }));
+        }
 
         private void OnChatReceived(object sender, ChatEventArgs e)
         {
@@ -206,8 +213,9 @@ namespace DedicatedServer.HostAutomatorStages
                     if (false == item.Vote)
                     {
                         item.Vote = true;
-                        SendChatMessage("Vote started");
-                        SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
+                        SendChatMessage(MainController.helper.Translation.Get(
+                            "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted"));
+                        SendUpdate();
                     }
                     break;
 
@@ -215,8 +223,9 @@ namespace DedicatedServer.HostAutomatorStages
                     if (true == item.Vote)
                     {
                         item.Vote = false;
-                        SendChatMessage("Vote canceled");
-                        SendChatMessage($"{NumberOfPeopleWhoVoted()} / {NumberOfVoters()} votes casted.");
+                        SendChatMessage(MainController.helper.Translation.Get(
+                            "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled"));
+                        SendUpdate();
                     }
                     break;
             }
