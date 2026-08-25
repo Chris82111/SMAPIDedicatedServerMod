@@ -50,7 +50,7 @@ namespace DedicatedServer.HostAutomatorStages
         /// <summary> The festival is over </summary>
         FestivalIsOver,        
     }
-
+    
     internal class TransitionFestivalAttendanceBehaviorLink : BehaviorLink
     {
         #region Required in derived class
@@ -164,7 +164,7 @@ namespace DedicatedServer.HostAutomatorStages
                             OnEventMassDisconnect();
                         }
 
-                        SendChatMessage($"{peopleVoted} / {numberVoters} votes casted. Starting the festival event...");
+                        SendChatMessage(_startFestival);
 
                         if (Festivals.IsTodayLuau && Game1.player.team.luauIngredients.Count > 0)
                         {
@@ -304,6 +304,13 @@ namespace DedicatedServer.HostAutomatorStages
                 OnTransitionFestivalChanged();
             }
         }
+
+        #region i18n
+
+        private string _startFestival => MainController.helper.Translation.Get(
+            "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival");
+
+        #endregion
 
         /// <summary>
         /// Called if the property <see cref="TransitionFestival"/> is changed.

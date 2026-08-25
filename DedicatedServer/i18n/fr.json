@@ -6,5 +6,6 @@
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyCancel": "annuler",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} votes exprimés.",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Vote lancé",
-  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote annulé"
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote annulé",
+  "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Lancement de l'événement du festival..."
 }
