@@ -14,7 +14,12 @@ namespace DedicatedServer.HostAutomatorStages
 {
     internal class PasswordValidation
     {
-        public static string notAuthorizedMessage = $"You are not authorized to do this." + TextColor.Red;
+        #region i18n
+
+        public static string _notAuthorizedMessage => MainController.helper.Translation.Get(
+            "DedicatedServer.HostAutomatorStages.PasswordValidation.notAuthorizedMessage");
+        
+        #endregion
 
         private IModHelper helper;
 
@@ -84,7 +89,14 @@ namespace DedicatedServer.HostAutomatorStages
                 return true;
             }
 
-            return ids.Contains(id);
+            var contains = ids.Contains(id);
+
+            if (false == contains)
+            {
+                MainController.chatBox.textBoxEnter(PasswordValidation._notAuthorizedMessage + TextColor.Red);
+            }
+
+            return contains;
         }
 
         private void chatReceived(object sender, ChatEventArgs e)
@@ -214,7 +226,6 @@ namespace DedicatedServer.HostAutomatorStages
         {
             if (false == PasswordValidation.IsAuthorized(sourceFarmer.UniqueMultiplayerID))
             {
-                chatBox.textBoxEnter(PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -240,7 +251,6 @@ namespace DedicatedServer.HostAutomatorStages
         {
             if (false == PasswordValidation.IsAuthorized(sourceFarmer.UniqueMultiplayerID))
             {
-                chatBox.textBoxEnter(PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -274,7 +284,6 @@ namespace DedicatedServer.HostAutomatorStages
         {
             if (false == PasswordValidation.IsAuthorized(sourceFarmer.UniqueMultiplayerID))
             {
-                chatBox.textBoxEnter(PasswordValidation.notAuthorizedMessage);
                 return;
             }
 

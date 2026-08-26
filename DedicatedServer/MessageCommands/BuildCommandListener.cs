@@ -129,7 +129,6 @@ namespace DedicatedServer.MessageCommands
             {
                 if (false == PasswordValidation.IsAuthorized(e.SourceFarmerId, p => p.Build))
                 {
-                    WriteToPlayer(sourceFarmer, PasswordValidation.notAuthorizedMessage);
                     return;
                 }
 

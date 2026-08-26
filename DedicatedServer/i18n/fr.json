@@ -1,0 +1,21 @@
+{
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "Pour lancer le festival, tapez \"{{start}}\" dans le chat.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "Si vous souhaitez annuler votre vote, tapez \"{{cancel}}\".",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3": "{{seconds}} secondes avant Lewis, c'est le départ.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyStart": "lancer",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyCancel": "annuler",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} votes exprimés.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Vote lancé",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote annulé",
+  "DedicatedServer.HostAutomatorStages.PasswordValidation.notAuthorizedMessage": "Vous n'êtes pas autorisé(e) à utiliser cette commande.",
+  "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Lancement de l'événement du festival...",
+  "DedicatedServer.Utils.HostHouseUpgrade.canNotRemoveCellar": "Impossible de supprimer la cave",
+  "DedicatedServer.Utils.HostHouseUpgrade.houseHasNecessaryLevel": "La maison a le niveau souhaité.",
+  "DedicatedServer.Utils.HostHouseUpgrade.updateIsInProgress": "Une mise à niveau est en cours, veuillez patienter jusqu'à ce qu'elle soit terminée.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostUpdateNextDay": "L'hôte mettra sa maison à niveau demain.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostWillUpgradeInDays": "L'hôte mettra sa maison à niveau dans {{days}} jours.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "Le code d'invitation n'a pas pu être reçu.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "Le code d'invitation {{inviteCode}} a été reçu.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown": "Attention : serveur va s'arrêter dans {{time}} secondes.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp": "Attention : serveur va redémarrer dans {{time}} secondes."
+}

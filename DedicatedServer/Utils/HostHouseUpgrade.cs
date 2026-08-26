@@ -20,6 +20,30 @@ namespace DedicatedServer.Utils
 
         private static readonly FieldInfo farmerDaysUntilHouseUpgradeFieldInfo = typeof(Farmer).GetField("daysUntilHouseUpgrade");
 
+
+        #region i18n
+
+        private static string _canNotRemoveCellar = MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.HostHouseUpgrade.canNotRemoveCellar");
+
+        private static string _houseHasNecessaryLevel = MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.HostHouseUpgrade.houseHasNecessaryLevel");
+
+        private static string _updateIsInProgress = MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.HostHouseUpgrade.updateIsInProgress");
+
+        private static string _hostUpdateNextDay = MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.HostHouseUpgrade.hostUpdateNextDay");
+
+        private static string HostWillUpgradeInDays(int days)
+        {
+            return MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.HostHouseUpgrade.HostWillUpgradeInDays",
+            new { days = days });
+        }
+
+        #endregion
+
         /// <summary>
         ///         Checks whether the host is upgrading their home
         /// </summary>
@@ -109,7 +133,7 @@ namespace DedicatedServer.Utils
 
                 if (daysMin != int.MaxValue && daysMin >= 0)
                 {
-                    MainController.chatBox.textBoxEnter($"The host will upgrade his house in {daysMin} days.");
+                    MainController.chatBox.textBoxEnter(HostWillUpgradeInDays(daysMin));
                     DaysUntilHouseUpgrade(Game1.player, daysMin);
                     upgradeIsBeingExecuted = true;
                 }
@@ -119,7 +143,7 @@ namespace DedicatedServer.Utils
                     // delayed upgrade (if ModConfig.UpgradeHostHouseWithFarmhand was deactivated)
                     if (levelMax > Game1.player.HouseUpgradeLevel)
                     {
-                        MainController.chatBox.textBoxEnter("The host will upgrade his house the next day.");
+                        MainController.chatBox.textBoxEnter(_hostUpdateNextDay);
                         DaysUntilHouseUpgrade(Game1.player, 1);
                         upgradeIsBeingExecuted = true;
                     }
@@ -279,7 +303,7 @@ namespace DedicatedServer.Utils
 
             if (IsHostUpgrading)
             {
-                MainController.chatBox.textBoxEnter($"An upgrade is being performed, wait until the update is complete.");
+                MainController.chatBox.textBoxEnter(_updateIsInProgress);
                 return;
             }
 
@@ -293,7 +317,7 @@ namespace DedicatedServer.Utils
 
             if (oldLevel == targetLevel)
             {
-                MainController.chatBox.textBoxEnter($"The house has the level you want.");
+                MainController.chatBox.textBoxEnter(_houseHasNecessaryLevel);
                 return;
             }
 
@@ -313,7 +337,7 @@ namespace DedicatedServer.Utils
 
                 if(2 == targetLevel && HasCellar(homeOfFarmer))
                 {
-                    MainController.chatBox.textBoxEnter($"Can not remove cellar" + TextColor.Red);
+                    MainController.chatBox.textBoxEnter(_canNotRemoveCellar + TextColor.Red);
                 }
 
                 AddBed(targetLevel, homeOfFarmer);
@@ -322,7 +346,7 @@ namespace DedicatedServer.Utils
                 DaysUntilHouseUpgrade(Game1.player, -1);
             }
         }
-        
+
 #if false
         // Should not be used. Works but if a figure is inside the house,
         // it can be placed outside the room boundaries when upgrading

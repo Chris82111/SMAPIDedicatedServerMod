@@ -1,0 +1,21 @@
+{
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "When you wish to start the festival, type \"{{start}}\" into chat.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "If you'd like to cancel your vote, type \"{{cancel}}\".",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3": "Standing in front of Lewis for {{seconds}} seconds, counts as start.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyStart": "start",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyCancel": "cancel",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} votes casted.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Vote started",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote canceled",
+  "DedicatedServer.HostAutomatorStages.PasswordValidation.notAuthorizedMessage": "You are not authorized to used the command.",
+  "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Starting the festival event...",
+  "DedicatedServer.Utils.HostHouseUpgrade.canNotRemoveCellar": "Can not remove cellar",
+  "DedicatedServer.Utils.HostHouseUpgrade.houseHasNecessaryLevel": "The house has the level you want.",
+  "DedicatedServer.Utils.HostHouseUpgrade.updateIsInProgress": "An upgrade is being performed, wait until the update is complete.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostUpdateNextDay": "The host will upgrade his house the next day.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostWillUpgradeInDays": "The host will upgrade his house in {{days}} days.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "The invitation code could not be received.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "The invitation code {{inviteCode}} was received.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown": "Attention: Server will shut down in {{time}} seconds.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp": "Attention: Server will start up in {{time}} seconds."
+}

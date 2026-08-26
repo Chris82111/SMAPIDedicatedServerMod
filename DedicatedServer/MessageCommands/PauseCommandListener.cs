@@ -34,7 +34,6 @@ namespace DedicatedServer.MessageCommands
             {
                 if (false == PasswordValidation.IsAuthorized(e.SourceFarmerId, p => p.Pause))
                 {
-                    MainController.chatBox.textBoxEnter(PasswordValidation.notAuthorizedMessage);
                     return;
                 }
 

@@ -1,0 +1,21 @@
+{
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage1": "Zum Starten des Festivals, gib im Chat \"{{start}}\" ein.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage2": "Zum Abbrechen des Festivals, gib im Chat \"{{cancel}}\" ein.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.entryMessage3": "{{seconds}} Sekunden vor Lewis stehen, gilt als Start.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyStart": "start",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.keyCancel": "stop",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} Stimmen wurden abgegeben.",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Abstimmung gestartet",
+  "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Abstimmung abgebrochen",
+  "DedicatedServer.HostAutomatorStages.PasswordValidation.notAuthorizedMessage": "Sie sind nicht berechtigt, diesen Befehl auszuführen.",
+  "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Das Festival beginnt...",
+  "DedicatedServer.Utils.HostHouseUpgrade.canNotRemoveCellar": "Der Keller kann nicht entfernt werden.",
+  "DedicatedServer.Utils.HostHouseUpgrade.houseHasNecessaryLevel": "Das Haus hat bereits die gewünschte Stufe.",
+  "DedicatedServer.Utils.HostHouseUpgrade.updateIsInProgress": "Es wird gerade ein Upgrade durchgeführt. Warte bis das Update abgeschlossen ist.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostUpdateNextDay": "Der Host wird sein Haus am nächsten Tag upgraden.",
+  "DedicatedServer.Utils.HostHouseUpgrade.hostWillUpgradeInDays": "Der Host wird sein Haus in {{days}} Tagen upgraden.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "Der Einladungscode konnte nicht erhalten werden.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "Der Einladungscode konnte erhalten werden {{inviteCode}}.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown": "Achtung: Server wird in {{time}} Sekunden heruntergefahren.",
+  "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp": "Achtung: Server wird in {{time}} Sekunden hochgefahren."
+}
