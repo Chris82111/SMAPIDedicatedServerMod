@@ -233,22 +233,27 @@ namespace DedicatedServer.Utils
         #region i18n
 
         private static string _couldNotReceiveInvitationCode => MainController.helper.Translation.Get(
-            "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode",
+            "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode");
+
+        private static string _couldReceiveInvitationCode => MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode",
             new { inviteCode = InviteCode });
+
         private static string _infoServerShuttingDown => MainController.helper.Translation.Get(
             "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown",
-            new { time = time});
+            new { time = _time});
+
         private static string _infoServerStartingUp => MainController.helper.Translation.Get(
             "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp",
-            new { time = time });
+            new { time = _time });
 
         #endregion
 
-        private static int time;
+        private static int _time;
 
-        private static TryActivatingStates tryActivatingState;
+        private static TryActivatingStates _tryActivatingState;
 
-        private static readonly int[] tryActivatingWaitTimes = { 9, 3, 9 };
+        private static readonly int[] _tryActivatingWaitTimes = { 9, 3, 9 };
 
         /// <summary>
         ///         Attempts to obtain the invitation code.
@@ -264,10 +269,10 @@ namespace DedicatedServer.Utils
         /// <br/>   false: the handler is already running and could not be started.</returns>
         public static bool TryActivatingInviteCode()
         {
-            if (TryActivatingStates.None != tryActivatingState) { return false; }
+            if (TryActivatingStates.None != _tryActivatingState) { return false; }
 
-            MultiplayerOptions.time = tryActivatingWaitTimes[0];
-            tryActivatingState = TryActivatingStates.WaitForInviteCode;
+            _time = _tryActivatingWaitTimes[0];
+            _tryActivatingState = TryActivatingStates.WaitForInviteCode;
 
             Enable();
 
@@ -285,12 +290,12 @@ namespace DedicatedServer.Utils
 
         private static void TryActivatingInviteCodeWorker(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            if (0 < time)
+            if (0 < _time)
             {
-                time--;
+                _time--;
             }
 
-            switch (tryActivatingState)
+            switch (_tryActivatingState)
             {
                 case TryActivatingStates.None:
                     Disable();
@@ -300,37 +305,37 @@ namespace DedicatedServer.Utils
                     if("" != InviteCode)
                     {
                         SaveInviteCode();
-                        tryActivatingState = TryActivatingStates.None;
-                        MainController.chatBox.textBoxEnter(_couldNotReceiveInvitationCode + TextColor.Green);
+                        _tryActivatingState = TryActivatingStates.None;
+                        MainController.chatBox.textBoxEnter(_couldReceiveInvitationCode + TextColor.Green);
                         MainController.monitor.Log($"Could receive the invitation code {InviteCode}", LogLevel.Warn);
                         return;
                     }
-                    if(0 == time)
+                    if(0 == _time)
                     {
-                        tryActivatingState = TryActivatingStates.DisableServer;
+                        _tryActivatingState = TryActivatingStates.DisableServer;
                     }
                     MainController.chatBox.textBoxEnter(_infoServerShuttingDown + TextColor.Yellow);
-                    MainController.monitor.Log($"Attention: Server will shut down in {time} seconds", LogLevel.Debug);
+                    MainController.monitor.Log($"Attention: Server will shut down in {_time} seconds", LogLevel.Debug);
                     break;
 
                 case TryActivatingStates.DisableServer:
-                    time = tryActivatingWaitTimes[1];
+                    _time = _tryActivatingWaitTimes[1];
                     EnableServer = false;
-                    tryActivatingState = TryActivatingStates.WaitUntilActivation;
+                    _tryActivatingState = TryActivatingStates.WaitUntilActivation;
                     break;
 
                 case TryActivatingStates.WaitUntilActivation:
-                    if (0 == time)
+                    if (0 == _time)
                     {
-                        tryActivatingState = TryActivatingStates.EnableServer;
+                        _tryActivatingState = TryActivatingStates.EnableServer;
                     }
                     MainController.chatBox.textBoxEnter(_infoServerStartingUp + TextColor.Yellow);
-                    MainController.monitor.Log($"Attention: The server is started in {time} seconds", LogLevel.Debug);
+                    MainController.monitor.Log($"Attention: The server is started in {_time} seconds", LogLevel.Debug);
                     break;
 
                 case TryActivatingStates.EnableServer:
-                    time = tryActivatingWaitTimes[2];
-                    tryActivatingState = TryActivatingStates.WaitForNewInviteCode;
+                    _time = _tryActivatingWaitTimes[2];
+                    _tryActivatingState = TryActivatingStates.WaitForNewInviteCode;
                     EnableServer = true;
                     break;
 
@@ -338,19 +343,21 @@ namespace DedicatedServer.Utils
                     if ("" != InviteCode)
                     {
                         SaveInviteCode();
-                        tryActivatingState = TryActivatingStates.None;
-                        // chatBox.textBoxEnter($"Could receive the invitation code {InviteCode}" + TextColor.Green);
+                        _tryActivatingState = TryActivatingStates.None;
+                        MainController.chatBox.textBoxEnter(_couldReceiveInvitationCode + TextColor.Green);
                         MainController.monitor.Log($"Could receive the invitation code {InviteCode}", LogLevel.Info);
                         return;
                     }
-                    if (0 == time)
+                    else if (0 == _time)
                     {
-                        tryActivatingState = TryActivatingStates.None;
-                        // chatBox.textBoxEnter($"Attention: Invitation code could not be retrieved" + TextColor.Red);
+                        _tryActivatingState = TryActivatingStates.None;
+                        MainController.chatBox.textBoxEnter(_couldNotReceiveInvitationCode + TextColor.Red);
                         MainController.monitor.Log($"Attention: Invitation code could not be retrieved", LogLevel.Warn);
                         return;
                     }
-                    // chatBox.textBoxEnter($"Attention: Try to get the invitation code, remaining time {time} seconds" + TextColor.Yellow);
+
+                    // wait
+
                     break;
             }
         }

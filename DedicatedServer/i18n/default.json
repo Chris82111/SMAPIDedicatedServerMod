@@ -8,7 +8,8 @@
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Vote started",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Vote canceled",
   "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Starting the festival event...",
-  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "The invitation code {{inviteCode}} was received.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "The invitation code could not be received.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "The invitation code {{inviteCode}} was received.",
   "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown": "Attention: Server will shut down in {{time}} seconds.",
   "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp": "Attention: Server will start up in {{time}} seconds."
 }

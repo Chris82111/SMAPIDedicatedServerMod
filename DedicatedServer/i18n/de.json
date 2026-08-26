@@ -8,7 +8,8 @@
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Abstimmung gestartet",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Abstimmung abgebrochen",
   "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Das Festival beginnt...",
-  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "Der Einladungscode konnte erhalten werden {{inviteCode}}.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "Der Einladungscode konnte nicht erhalten werden.",
+  "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "Der Einladungscode konnte erhalten werden {{inviteCode}}.",
   "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown": "Achtung: Server wird in {{time}} Sekunden heruntergefahren.",
   "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp": "Achtung: Server wird in {{time}} Sekunden hochgefahren."
 }
