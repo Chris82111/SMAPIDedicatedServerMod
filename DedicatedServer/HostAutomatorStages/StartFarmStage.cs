@@ -120,6 +120,8 @@ namespace DedicatedServer.HostAutomatorStages
                 return;
             }
 
+            Language.ChangeLanguage(monitor, config);
+
             Farmer hostedFarmer = MainController.GetFarmerOfSaveGameOrDefault(config.FarmName);
 
             if (null == hostedFarmer)

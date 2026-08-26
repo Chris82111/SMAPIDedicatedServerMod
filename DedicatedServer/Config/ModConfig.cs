@@ -9,6 +9,13 @@ namespace DedicatedServer.Config
     public class ModConfig
     {
         /// <summary>
+        ///         Two letter language code, see: <see cref="StardewValley.LocalizedContentManager.LanguageCode"/>
+        /// <br/>   All values in the enumeration are valid and change the game's language.
+        /// <br/>   The mod's language only supports en, de, and fr.
+        /// </summary>
+        public string Language { get; set; } = null;
+
+        /// <summary>
         /// Server Port, if this value is set to null, this mod will not change the port, so Stardew Valley's default port (24642) will be used.
         /// </summary>
         public UInt16? Port { get; set; } = null;
