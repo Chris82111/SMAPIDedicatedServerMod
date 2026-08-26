@@ -230,6 +230,20 @@ namespace DedicatedServer.Utils
             WaitForNewInviteCode,
         }
 
+        #region i18n
+
+        private static string _couldNotReceiveInvitationCode => MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode",
+            new { inviteCode = InviteCode });
+        private static string _infoServerShuttingDown => MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.MultiplayerOptions.infoServerShuttingDown",
+            new { time = time});
+        private static string _infoServerStartingUp => MainController.helper.Translation.Get(
+            "DedicatedServer.Utils.MultiplayerOptions.infoServerStartingUp",
+            new { time = time });
+
+        #endregion
+
         private static int time;
 
         private static TryActivatingStates tryActivatingState;
@@ -287,7 +301,7 @@ namespace DedicatedServer.Utils
                     {
                         SaveInviteCode();
                         tryActivatingState = TryActivatingStates.None;
-                        MainController.chatBox.textBoxEnter($"Could receive the invitation code {InviteCode}" + TextColor.Green);
+                        MainController.chatBox.textBoxEnter(_couldNotReceiveInvitationCode + TextColor.Green);
                         MainController.monitor.Log($"Could receive the invitation code {InviteCode}", LogLevel.Warn);
                         return;
                     }
@@ -295,7 +309,7 @@ namespace DedicatedServer.Utils
                     {
                         tryActivatingState = TryActivatingStates.DisableServer;
                     }
-                    MainController.chatBox.textBoxEnter($"Attention: Server will shut down in {time} seconds" + TextColor.Yellow);
+                    MainController.chatBox.textBoxEnter(_infoServerShuttingDown + TextColor.Yellow);
                     MainController.monitor.Log($"Attention: Server will shut down in {time} seconds", LogLevel.Debug);
                     break;
 
@@ -310,7 +324,7 @@ namespace DedicatedServer.Utils
                     {
                         tryActivatingState = TryActivatingStates.EnableServer;
                     }
-                    MainController.chatBox.textBoxEnter($"Attention: The server is started in {time} seconds" + TextColor.Yellow);
+                    MainController.chatBox.textBoxEnter(_infoServerStartingUp + TextColor.Yellow);
                     MainController.monitor.Log($"Attention: The server is started in {time} seconds", LogLevel.Debug);
                     break;
 
