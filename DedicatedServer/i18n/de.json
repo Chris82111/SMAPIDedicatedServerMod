@@ -7,6 +7,7 @@
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.sendVoteUpdate": "{{voted}} / {{voters}} Stimmen wurden abgegeben.",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteStarted": "Abstimmung gestartet",
   "DedicatedServer.HostAutomatorStages.FestivalChatBox.voteCanceled": "Abstimmung abgebrochen",
+  "DedicatedServer.HostAutomatorStages.PasswordValidation.notAuthorizedMessage": "Sie sind nicht berechtigt, diesen Befehl auszuführen.",
   "DedicatedServer.HostAutomatorStages.TransitionFestivalAttendanceBehaviorLink.startFestival": "Das Festival beginnt...",
   "DedicatedServer.Utils.MultiplayerOptions.couldNotReceiveInvitationCode": "Der Einladungscode konnte nicht erhalten werden.",
   "DedicatedServer.Utils.MultiplayerOptions.couldReceiveInvitationCode": "Der Einladungscode konnte erhalten werden {{inviteCode}}.",

@@ -50,7 +50,7 @@ public sealed class MapHelper
 
     public void Unpatch()
     {
-        MethodInfo? method = AccessTools.Method(
+        MethodInfo method = AccessTools.Method(
             typeof(Farmer),
             "queueMessage",
             new[]
@@ -106,7 +106,7 @@ public sealed class MapHelper
         Farmer sourceFarmer,
         object[] data)
     {
-        MapHelper? instance = _instance;
+        MapHelper instance = _instance;
 
         if (instance == null) { return true; }
 
@@ -150,7 +150,7 @@ public sealed class MapHelper
             // The real Farmer is never modified.
             NetRoot<Farmer> clone = root.Clone();
 
-            Farmer? cloneFarmer = clone.Value;
+            Farmer cloneFarmer = clone.Value;
 
             if (null == cloneFarmer) { return true; }
 
