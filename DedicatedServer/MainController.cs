@@ -179,19 +179,43 @@ namespace DedicatedServer
 
         public static Farmer GetFarmerOfSaveGameOrDefault(string farmName, List<Farmer> saveGameFarmers)
         {
-            foreach (Farmer farmer in saveGameFarmers)
-            {
-                if (!farmer.slotCanHost)
-                {
-                    continue;
-                }
-                if (farmer.farmName.Value == farmName)
-                {
-                    return farmer;
-                }
-            }
+            var farmers = saveGameFarmers
+                .Where(farmer => farmer.farmName.ToString() == farmName)
+                .ToList();
 
-            return null;
+            switch (farmers.Count)
+            {
+                case 0:
+                    monitor.Log($"No farm found.", LogLevel.Info);
+                    return null;
+
+                case 1:
+                    var foundFarmer = farmers[0];
+
+                    monitor.Log($"One farm found (farm name, host farmer, directory name):", LogLevel.Info);
+                    monitor.Log($"  {foundFarmer.farmName}, {foundFarmer.Name}, {foundFarmer.slotName}", LogLevel.Info);
+
+                    if (false == foundFarmer.slotCanHost)
+                    {
+                        monitor.Log($"The farm you found actually exists, but no one can join it because " +
+                            $"it's not a multiplayer game and/or there are no huts.", LogLevel.Error);
+                        Exit(-1);
+                    }
+
+                    return foundFarmer;
+
+                default:
+                    monitor.Log($"Several farms with the same name were found. " +
+                        $"Please make sure there is only one farm with this name. " +
+                        $"The following farms were found (farm name, host farmer, directory name):", LogLevel.Error);
+
+                    foreach (Farmer farmer in farmers)
+                    {
+                        monitor.Log($"  {farmer.farmName}, {farmer.Name}, {farmer.slotName}", LogLevel.Info);
+                    }
+                    Exit(-1);
+                    throw new Exception("Error while Exit() is called.");
+            }
         }
 
         public static Farmer GetFarmerOfSaveGameOrDefault(string farmName)
