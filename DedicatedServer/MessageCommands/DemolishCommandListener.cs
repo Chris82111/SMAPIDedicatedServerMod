@@ -136,7 +136,6 @@ namespace DedicatedServer.MessageCommands
                 
                 if (false == PasswordValidation.IsAuthorized(e.SourceFarmerId, p => p.Demolish))
                 {
-                    MainController.chatBox.textBoxEnter(PasswordValidation.notAuthorizedMessage);
                     return;
                 }
 

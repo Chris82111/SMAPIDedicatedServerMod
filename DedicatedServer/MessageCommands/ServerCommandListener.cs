@@ -716,7 +716,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.LetMePlay))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -728,7 +727,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.TakeOver))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -740,7 +738,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.UpgradeHouseLevelBasedOnFarmhand))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -766,7 +763,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.SafeInviteCode))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -785,7 +781,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.InviteCode))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
             
@@ -798,7 +793,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.ForceInviteCode))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -809,7 +803,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.Invisible))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -821,7 +814,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.Sleep))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -847,7 +839,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.ForceSleep))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
             
@@ -858,7 +849,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.ForceResetDay))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -869,7 +859,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.ForceShutdown))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -880,7 +869,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.Wallet))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -891,7 +879,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.Wallet))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -902,7 +889,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.SpawnMonster))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 
@@ -922,7 +908,6 @@ namespace DedicatedServer.MessageCommands
         {
             if (false == PasswordValidation.IsAuthorized(farmer.UniqueMultiplayerID, p => p.MoveBuildPermission))
             {
-                WriteToPlayer(farmer, PasswordValidation.notAuthorizedMessage);
                 return;
             }
 

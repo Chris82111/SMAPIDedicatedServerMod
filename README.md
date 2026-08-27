@@ -16,7 +16,26 @@ This mod provides a dedicated (headless) server for Stardew Valley, powered by S
 
 ### Festivals
 
-In some festivals, the host starts the event. Players must vote using `start` and `cancel`. Once all players have agreed to start, the host begins the event. Alternatively, a player can stand in front of Lewis. After 10 seconds, this is also considered consent to start. If a player steps back from Lewis or opens a menu, their consent is revoked.
+In some festivals, the host starts the event. Players must vote using `start` (en) and `cancel` (en). Once all players have agreed to start, the host begins the event. Alternatively, a player can stand in front of Lewis. After 10 seconds, this is also considered consent to start. If a player steps back from Lewis or opens a menu, their consent is revoked.
+
+During festivals, the player must interact with the host to start the event:
+
+| Key | Start | Cancel  |
+| --- | ----- | ------- |
+| en | start  | cancel  |
+| de | start  | stop    |
+| fr | lancer | annuler |
+
+### Language
+
+The commands and output that appear during normal gameplay have been translated:
+
+| Key | File |
+| --- | --- |
+| en | [default.json](./DedicatedServer/i18n/default.json) |
+| de | [de.json](./DedicatedServer/i18n/de.json) |
+| fr | [fr.json](./DedicatedServer/i18n/fr.json) |
+
 
 ## Configuration File
 
@@ -25,8 +44,9 @@ Upon running SMAPI with the mod installed for the first time, a `config.json` fi
 ### Startup options
 
 - `Port`: The game's port can be customized. `null` prevents the port from being overwritten.
+- `Language`: All standard languages are accepted as input: en, ja, ru, zh, pt, es, de, th, fr, ko, it, tr, and hu. Unfortunately, the mod's text only supports the languages listed under [Language](#language).
 - `PlayerLimit`: Sets the maximum number of houses you can buy from Robin. The minimum and default value is 8.
-- `FarmName`: The name of the farm. If a farm with this name exists, it will automatically be loaded and hosted for co-op. Otherwise, a new farm will be created using the specified farm creation options and then hosted for co-op.
+- `FarmName`: The farm's name. The farm's name must match, and the farm must have cabins for the other players. The farm will then be loaded and hosted for co-op. If no farm exists, a new farm will be created based on the specified farm creation options and then hosted for co-op. If multiple farms exist or no cabin is available, the game crashes and displays an error message.
 
 ### Farm Creation Options
 
