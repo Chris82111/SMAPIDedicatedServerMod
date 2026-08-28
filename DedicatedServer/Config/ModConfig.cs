@@ -39,8 +39,19 @@ namespace DedicatedServer.Config
         // Options are "shared" or "separate"
         public string MoneyStyle { get; set; } = "shared";
 
-        // Options are "standard", "riverland", "forest", "hilltop", "wilderness", "fourcorners", "beach".
+        /// <summary>
+        ///         Options are "standard", "riverland", "forest", "hilltop", "wilderness",
+        /// <br/>               "fourcorners", "beach", "meadowlands", or "mod"
+        /// </summary>
         public string FarmType { get; set; } = "standard";
+
+        /// <summary>
+        ///         The farm ID must be selected to match the mod map. The mod ID for all mod
+        /// <br/>   maps is displayed in the log. If you don't know it, let the game crash once and
+        /// <br/>   read the ID from the log. This option is only used when <see cref="FarmType"/>
+        /// <br/>   is set to "mod".
+        /// </summary>
+        public string ModFarmId { get; set; } = null;
 
         // Options are "normal" or "remixed".
         public string CommunityCenterBundles { get; set; } = "normal";

@@ -7,6 +7,7 @@ using DedicatedServer.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData;
 using StardewValley.Menus;
 using System.Collections.Generic;
 using System.Linq;
@@ -227,15 +228,7 @@ namespace DedicatedServer.HostAutomatorStages
                 Game1.player.whichPetType = StardewValley.Characters.Pet.type_dog;
             }
 
-            // Farm type
-            if (config.FarmType != "standard" && config.FarmType != "riverland" &&
-                config.FarmType != "forest" && config.FarmType != "hilltop" &&
-                config.FarmType != "wilderness" && config.FarmType != "fourcorners" &&
-                config.FarmType != "beach" && config.FarmType != "meadowlands")
-            {
-                LogConfigError("Farm type must be one of \"standard\", \"riverland\", \"forest\", \"hilltop\", \"wilderness\", \"fourcorners\", \"beach\", or \"meadowlands\"");
-                Exit(-1);
-            }
+            #region Farm type
 
             if (config.FarmType == "standard")
             {
@@ -272,23 +265,83 @@ namespace DedicatedServer.HostAutomatorStages
 
                 var additionalFarms = DataLoader.AdditionalFarms(Game1.content);
 
-                var modFarm = additionalFarms?.FirstOrDefault(f => f.Id == MeadowlandsFarmId);
+                var meadowlandsFarm = additionalFarms?.FirstOrDefault(f => f.Id == MeadowlandsFarmId);
 
-                if (null == modFarm)
+                if (null == meadowlandsFarm)
                 {
                     LogConfigError($"There were problems loading the 'meadowlands' farm.");
                     Exit(-1);
                 }
 
-                Game1.whichModFarm = modFarm;
+                Game1.whichModFarm = meadowlandsFarm;
             }
+            else if (config.FarmType == "mod")
+            {
+                // Farm type 7 is for mods
+                Game1.whichFarm = 7;
+
+                var additionalModFarms = DataLoader.AdditionalFarms(Game1.content);
+
+                additionalModFarms?.RemoveAll(f => f.Id == MeadowlandsFarmId);
+
+                if (0 == additionalModFarms.Count)
+                {
+                    monitor.Log($"There are no additional mod farms available.", LogLevel.Error);
+
+                    monitor.Log($"There are two common methods for integrating other maps:", LogLevel.Error);
+                    monitor.Log($"  1. A standard farm is replaced; therefore, use the name of the standard farm being overwritten.", LogLevel.Error);
+                    monitor.Log($"  2. A new mod map is created; in this case, you must specify the map's id name", LogLevel.Error);
+                    monitor.Log($"     (all mod map IDs are logged).", LogLevel.Error);
+                    Exit(-1);
+                }
+                else
+                {
+                    ModFarmType selectedModFarm = null;
+
+                    monitor.Log($"There are additional mod farms available:", LogLevel.Info);
+                    foreach (var modFarm in additionalModFarms)
+                    {
+                        monitor.Log($"  {modFarm.Id}", LogLevel.Info);
+
+                        if (null != config.ModFarmId && modFarm.Id == config.ModFarmId)
+                        {
+                            selectedModFarm = modFarm;
+                            break;
+                        }
+                    }
+
+                    if (null != selectedModFarm)
+                    {
+                        monitor.Log($"Mod farm {selectedModFarm.Id} has been selected.", LogLevel.Info);
+                        Game1.whichModFarm = selectedModFarm;
+                    }
+                    else
+                    {
+                        monitor.Log($"An attempt was made to load the farm \"{config.ModFarmId ?? "null"}\". It was not found.", LogLevel.Error);
+
+                        monitor.Log($"There are two common methods for integrating other maps:", LogLevel.Error);
+                        monitor.Log($"  1. A standard farm is replaced; therefore, use the name of the standard farm being overwritten.", LogLevel.Error);
+                        monitor.Log($"  2. A new mod map is created; in this case, you must specify the map's id name", LogLevel.Error);
+                        monitor.Log($"     (All mod card IDs are listed above).", LogLevel.Error);
+                        Exit(-1);
+                    }
+                }
+            }
+            else
+            {
+                LogConfigError("Farm type must be one of \"standard\", \"riverland\", \"forest\", \"hilltop\", \"wilderness\", \"fourcorners\", \"beach\", \"meadowlands\", or \"mod\".");
+                Exit(-1);
+            }
+
+            #endregion
+
 
             // Community center bundles type
             if (config.CommunityCenterBundles != "normal" && config.CommunityCenterBundles != "remixed")
-            {
-                LogConfigError("Community center bundles must be either \"normal\" or \"remixed\"");
-                Exit(-1);
-            }
+                {
+                    LogConfigError("Community center bundles must be either \"normal\" or \"remixed\"");
+                    Exit(-1);
+                }
             if (config.CommunityCenterBundles == "normal")
             {
                 Game1.bundleType = Game1.BundleType.Default;
