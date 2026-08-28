@@ -123,6 +123,8 @@ namespace DedicatedServer.HostAutomatorStages
 
             Language.ChangeLanguage(monitor, config);
 
+            PrintAvailableModFarms();
+
             Farmer hostedFarmer = MainController.GetFarmerOfSaveGameOrDefault(config.FarmName);
 
             if (null == hostedFarmer)
@@ -135,6 +137,19 @@ namespace DedicatedServer.HostAutomatorStages
             }
 
             DisableExecute();
+        }
+
+        private void PrintAvailableModFarms()
+        {
+            var additionalModFarms = DataLoader.AdditionalFarms(Game1.content);
+
+            additionalModFarms?.RemoveAll(f => f.Id == MeadowlandsFarmId);
+
+            monitor.Log($"There are additional mod farms available:", LogLevel.Info);
+            foreach (var modFarm in additionalModFarms)
+            {
+                monitor.Log($"  {modFarm.Id}", LogLevel.Info);
+            }
         }
 
         private void CreateNewGame()
@@ -296,19 +311,11 @@ namespace DedicatedServer.HostAutomatorStages
                 }
                 else
                 {
-                    ModFarmType selectedModFarm = null;
-
                     monitor.Log($"There are additional mod farms available:", LogLevel.Info);
-                    foreach (var modFarm in additionalModFarms)
-                    {
-                        monitor.Log($"  {modFarm.Id}", LogLevel.Info);
 
-                        if (null != config.ModFarmId && modFarm.Id == config.ModFarmId)
-                        {
-                            selectedModFarm = modFarm;
-                            break;
-                        }
-                    }
+                    ModFarmType selectedModFarm = (string.IsNullOrEmpty(config.ModFarmId))
+                        ? null
+                        : additionalModFarms.FirstOrDefault(f => f.Id == config.ModFarmId);
 
                     if (null != selectedModFarm)
                     {

@@ -54,7 +54,8 @@ Upon running SMAPI with the mod installed for the first time, a `config.json` fi
 - `CabinLayout`: Specifies the starting cabin layout. Options are "nearby" or "separate".
 - `ProfitMargin`: The farm's profit margin. Options are "normal", "75%", "50%", and "25%".
 - `MoneyStyle`: Determines whether money is shared or separate among farmers. Options are "shared" or "separate".
-- `FarmType`: The type of farm. Options include "standard", "riverland", "forest", "hilltop", "wilderness", "fourcorners", "beach", and "meadowlands".
+- `FarmType`: The type of farm. Options include "standard", "riverland", "forest", "hilltop", "wilderness", "fourcorners", "beach", "meadowlands", and "mod". If "mod" is used see option "ModFarmId".
+- `ModFarmId`: The farm ID must be selected to match the mod map ID. The mod ID for all mod maps is displayed in the log. If you don't know it, let the game crash once and read the ID from the log. This option is only used when "FarmType" is set to "mod". For more information on MOD maps, see the [Mod Maps](#mod-maps) chapter.
 - `CommunityCenterBundles`: The community center bundle type. Options are "normal" or "remixed".
 - `GuaranteeYear1Completable`: Set to `true` or `false` to determine if the community center should be guaranteed completable during the first year.
 - `MineRewards`: The mine rewards type. Options are "normal" or "remixed".
@@ -145,6 +146,17 @@ All these commands only work if you are the host. This allows you to take contro
 
 - `LetMePlay`: Lets the player take over the host. All host functions are switched off. The `TakeOver` command must be entered to hand over the controller. \
   Please note that the host automation accepts gifts from events and NPCs and deletes items from the inventory if necessary.
+
+## Mod Maps
+
+This mod should work with all modded maps, as long as there is a house for the host. Since not all mods can be tested, please test it yourself.
+
+Please note that if changes are made to the game - such as using a different map - all clients must install the same mods. If a player joins the game without the mods, items may be lost, or the player may be placed or teleported to areas where they cannot move or free themselves. 
+
+There are two common methods for integrating other maps:
+
+1. A standard farm is replaced; therefore, use the name of the standard farm being overwritten.
+2. A new mod map is created; in this case, you must specify the map's id name. Unfortunately, this ID isn't included in most mod descriptions. If you don't know it, let the game crash once and read the ID from the log.
 
 ## Version Update
 
