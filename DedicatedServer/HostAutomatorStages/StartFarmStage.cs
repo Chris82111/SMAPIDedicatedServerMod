@@ -272,6 +272,7 @@ namespace DedicatedServer.HostAutomatorStages
                 Game1.player.whichPetType = StardewValley.Characters.Pet.type_dog;
             }
 
+
             #region Farm type
 
             if (config.FarmType == "standard")
@@ -321,6 +322,13 @@ namespace DedicatedServer.HostAutomatorStages
             }
             else if (config.FarmType == "mod")
             {
+                ///         Tested with map "Rolling Hills Farm", see: <see href="https://www.nexusmods.com/stardewvalley/mods/5393"/>, and
+                /// <br/>   with map "Lavender Meadows", see <see href="https://www.nexusmods.com/stardewvalley/mods/14539"/>
+                /// <br/>   
+                /// <br/>   For the maps other mods are necessary:
+                /// <br/>   "Content Patcher", see <see href="https://www.nexusmods.com/stardewvalley/mods/1915"/>
+                /// <br/>   "DaisyNiko's Tilesheets", see <see href="https://www.nexusmods.com/stardewvalley/mods/4736"/>
+
                 // Farm type 7 is for mods
                 Game1.whichFarm = 7;
 
@@ -376,10 +384,10 @@ namespace DedicatedServer.HostAutomatorStages
 
             // Community center bundles type
             if (config.CommunityCenterBundles != "normal" && config.CommunityCenterBundles != "remixed")
-                {
-                    LogConfigError("Community center bundles must be either \"normal\" or \"remixed\"");
-                    Exit(-1);
-                }
+            {
+                LogConfigError("Community center bundles must be either \"normal\" or \"remixed\"");
+                Exit(-1);
+            }
             if (config.CommunityCenterBundles == "normal")
             {
                 Game1.bundleType = Game1.BundleType.Default;
