@@ -139,6 +139,27 @@ namespace DedicatedServer.HostAutomatorStages
             DisableExecute();
         }
 
+        private KeyValuePair<string, string>? ModNameAndDescriptionOrDefault(ModFarmType modFarm)
+        {
+            if (null == modFarm) { return null; }
+
+            string path = modFarm.TooltipStringPath;
+
+            if (string.IsNullOrEmpty(path)) { return null; }
+
+            var nameAndDescription = Game1.content.LoadStringReturnNullIfNotFound(path);
+
+            if (null == nameAndDescription) { return null; }
+
+            var stringArray = nameAndDescription.Split('_', 2);
+
+            if (2 != stringArray.Length) { return null; }
+
+            return new KeyValuePair<string, string>(
+                stringArray[0],
+                stringArray[1]);
+        }
+
         private void PrintAvailableModFarms()
         {
             var additionalModFarms = DataLoader.AdditionalFarms(Game1.content);
@@ -148,7 +169,15 @@ namespace DedicatedServer.HostAutomatorStages
             monitor.Log($"There are additional mod farms available:", LogLevel.Info);
             foreach (var modFarm in additionalModFarms)
             {
-                monitor.Log($"  {modFarm.Id}", LogLevel.Info);
+                var modNameAndDescription = ModNameAndDescriptionOrDefault(modFarm);
+                if (null == modNameAndDescription)
+                {
+                    monitor.Log($"  Id: {modFarm.Id}", LogLevel.Info);
+                }
+                else
+                {
+                    monitor.Log($"  Id: {modFarm.Id}, Name: {modNameAndDescription.Value.Key}", LogLevel.Info);
+                }
             }
         }
 
@@ -315,7 +344,9 @@ namespace DedicatedServer.HostAutomatorStages
 
                     ModFarmType selectedModFarm = (string.IsNullOrEmpty(config.ModFarmId))
                         ? null
-                        : additionalModFarms.FirstOrDefault(f => f.Id == config.ModFarmId);
+                        : additionalModFarms.FirstOrDefault(
+                            f => f.Id == config.ModFarmId ||
+                            ModNameAndDescriptionOrDefault(f)?.Key == config.ModFarmId);
 
                     if (null != selectedModFarm)
                     {
