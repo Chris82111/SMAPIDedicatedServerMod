@@ -7,7 +7,18 @@ using StardewValley;
 
 namespace DedicatedServer
 {
-    /// <summary>The mod entry point.</summary>
+    /// <summary>
+    ///         The mod entry point.
+    /// <br/>   
+    /// <br/>   All mods are in the following path in Windows:
+    /// <br/>   <c>"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\"</c>
+    /// <br/>   
+    /// <br/>   By default, the config file is located at the following path in Windows:
+    /// <br/>   <c>"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\DedicatedServer\"</c>
+    /// 
+    /// <br/>   By default, the save game files are located at the following path in Windows:
+    /// <br/>   <c>"%appdata%\StardewValley\Saves"</c>
+    /// </summary>
     public class ModEntry : Mod
     {
         // TODO: Make the host icon on the map invisible to everyone else
